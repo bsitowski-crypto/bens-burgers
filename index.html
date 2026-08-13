@@ -1,7 +1,59 @@
 <!doctype html><html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>Ben's Burgers Landscape</title>
-<link rel="stylesheet" href="style.css?v=6"></head><body>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ben's Burgers">
+<title>Ben's Burgers</title>
+<link rel="stylesheet" href="style.css?v=7">
+<style>
+/* iPhone full-viewport override */
+html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;overscroll-behavior:none;background:#111}
+body{position:fixed;inset:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#game{width:100vw!important;height:100dvh!important;max-width:none!important;margin:0!important;position:fixed!important;inset:0!important;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
+@supports(height:100svh){#game{height:100svh!important}}
+@media(orientation:landscape){#game{height:100dvh!important}}
+
+/* Crop the source photos into ingredient-shaped sprites instead of square photos */
+.rawSprite,.spritePatty,.layer.patty img{
+  clip-path:ellipse(47% 43% at 50% 50%);
+  -webkit-clip-path:ellipse(47% 43% at 50% 50%);
+  filter:drop-shadow(0 5px 4px rgba(0,0,0,.45))!important;
+}
+.plateBun img{
+  clip-path:ellipse(48% 34% at 50% 53%);
+  -webkit-clip-path:ellipse(48% 34% at 50% 53%);
+  filter:drop-shadow(0 5px 4px rgba(0,0,0,.38))!important;
+}
+.bunStockSprite{
+  clip-path:ellipse(46% 43% at 50% 50%);
+  -webkit-clip-path:ellipse(46% 43% at 50% 50%);
+  transform:scale(1.12);
+}
+.cheeseStockSprite{
+  clip-path:polygon(7% 28%,22% 10%,78% 7%,96% 34%,87% 76%,58% 94%,12% 79%);
+  -webkit-clip-path:polygon(7% 28%,22% 10%,78% 7%,96% 34%,87% 76%,58% 94%,12% 79%);
+  transform:scale(1.08);
+}
+.layer.cheese img{
+  clip-path:polygon(4% 23%,22% 7%,86% 13%,98% 70%,72% 94%,10% 82%);
+  -webkit-clip-path:polygon(4% 23%,22% 7%,86% 13%,98% 70%,72% 94%,10% 82%);
+  filter:drop-shadow(0 4px 3px rgba(0,0,0,.38))!important;
+}
+.layer.topBun img{
+  clip-path:ellipse(48% 45% at 50% 58%);
+  -webkit-clip-path:ellipse(48% 45% at 50% 58%);
+  filter:drop-shadow(0 5px 4px rgba(0,0,0,.4))!important;
+}
+/* Make the assembled burger compact and aligned on the plate */
+.layer.patty{width:27%!important;height:11%!important;bottom:27%!important}
+.layer.cheese{width:29%!important;height:9%!important;bottom:33%!important}
+.layer.topBun{width:29%!important;height:17%!important;bottom:37%!important}
+.plateBun{width:38%!important;height:20%!important;bottom:10%!important}
+.foodItem{overflow:hidden!important}
+.stockSprite{background:transparent!important;border:0!important;box-shadow:none!important}
+</style></head><body>
 <div id="rotate">📱↻<br><br>Turn your phone sideways to play<br><b>Ben's Burgers</b></div>
 <div id="game">
 <div class="top"><div class="logo">Ben's Burgers</div><div class="stat">💵 $<span id="money">0.00</span></div><div class="stat">⭐ <span id="score">0</span></div><div class="stat">👥 <span id="served">0</span>/8</div></div>
@@ -11,14 +63,9 @@
  <div class="station prepStation"><div class="label">🍽️ ASSEMBLY</div>
    <div class="board"><div class="plate"></div><button id="plateBun" class="plateBun" aria-label="Bottom bun on plate"><img src="assets/bottom-bun.png" alt="bottom bun"></button><div id="layers"></div></div>
    <div class="foodShelf">
-     <button class="foodItem" id="bun" aria-label="Bun">
-       <img class="stockSprite bunStockSprite" src="assets/buns-stock.png" alt="buns"><span class="foodLabel">BUNS</span>
-     </button>
-     <button class="foodItem" id="cheese" aria-label="Cheese">
-       <img class="stockSprite cheeseStockSprite" src="assets/cheese-stock.png" alt="cheese slices"><span class="foodLabel">CHEESE</span>
-     </button>
+     <button class="foodItem" id="bun" aria-label="Bun"><img class="stockSprite bunStockSprite" src="assets/buns-stock.png" alt="buns"><span class="foodLabel">BUNS</span></button>
+     <button class="foodItem" id="cheese" aria-label="Cheese"><img class="stockSprite cheeseStockSprite" src="assets/cheese-stock.png" alt="cheese slices"><span class="foodLabel">CHEESE</span></button>
    </div>
  </div>
-
 </div><div class="msg" id="msg"></div></div>
-<script src="game.js?v=6"></script></body></html>
+<script src="game.js?v=7"></script></body></html>

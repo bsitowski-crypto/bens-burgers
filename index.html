@@ -1,4 +1,7 @@
-<!doctype html><html><head><meta charset="utf-8">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
 <meta name="theme-color" content="#111111">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -6,35 +9,21 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ben's Burgers">
 <title>Ben's Burgers</title>
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=10">
 <style>
 html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;overscroll-behavior:none;background:#111}
 body{position:fixed;inset:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #game{width:100vw!important;height:100dvh!important;max-width:none!important;margin:0!important;position:fixed!important;inset:0!important;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
 @supports(height:100svh){#game{height:100svh!important}}
 @media(orientation:landscape){#game{height:100dvh!important}}
-.rawSprite,.stockSprite,.plateBun img{display:none!important}
-.rawbin:before{content:"";display:block;width:58%;height:76%;border-radius:50%;background:radial-gradient(circle at 34% 27%,rgba(255,255,255,.28) 0 4%,transparent 5%),repeating-radial-gradient(ellipse at 50% 50%,#e96d6a 0 5px,#ce5654 6px 10px,#b94443 11px 13px);border:2px solid #8b3534;box-shadow:inset 0 6px 9px #fff3,inset 0 -7px 10px #6005,0 5px 7px #0006}
-.rawbin.selected:before{filter:drop-shadow(0 0 8px #ffd95a)}
-.grillPatty{display:none;position:absolute!important;left:50%!important;top:50%!important;width:34%!important;height:48%!important;transform:translate(-50%,-50%)!important;border-radius:50%!important;border:2px solid #3d2018!important;box-shadow:inset 0 5px 7px #fff2,inset 0 -7px 10px #0005,0 6px 8px #0008!important}
-.grillPatty.raw{background:repeating-radial-gradient(ellipse,#dc6763 0 5px,#c44e4a 6px 10px)!important}.grillPatty.cooking{background:repeating-radial-gradient(ellipse,#a85a40 0 5px,#82422f 6px 10px)!important}.grillPatty.ready{background:repeating-linear-gradient(18deg,transparent 0 11px,#2b171280 12px 14px,transparent 15px 23px),linear-gradient(#7a4632,#4e2c21)!important}.grillPatty.burned{background:repeating-linear-gradient(18deg,transparent 0 10px,#0009 11px 14px,transparent 15px 22px),linear-gradient(#2e2521,#171311)!important}.grillPatty.pickable{filter:drop-shadow(0 0 8px #79e85f)}.grillPatty.selectedCooked{filter:drop-shadow(0 0 10px #ffd95a);transform:translate(-50%,-50%) scale(1.08)!important}
-.plateBun{width:42%!important;height:20%!important;bottom:10%!important;background:transparent!important;border:0!important;box-shadow:none!important}.plateBun:before{display:block!important;content:"";position:absolute;left:50%;bottom:20%;transform:translateX(-50%);width:78%;height:36%;border-radius:8px 8px 26px 26px;background:linear-gradient(#edbd79 0 18%,#da9c54 55%,#b96f34 100%);border:2px solid #8f5428;box-shadow:inset 0 4px 5px #fff4,inset 0 -5px 7px #6d341f40,0 5px 6px #0006}.plateBun.readyTarget:before{filter:drop-shadow(0 0 10px #ffd84e)}
-.layer{left:50%!important;transform:translateX(-50%)!important;border:0!important;background:transparent!important;box-shadow:none!important;height:auto!important}.layer.patty{width:31%!important;height:9%!important;bottom:26%!important;border-radius:50%!important;background:repeating-linear-gradient(14deg,transparent 0 10px,#2d181266 11px 13px,transparent 14px 20px),linear-gradient(#784532,#4e2d22)!important;border:2px solid #3a211a!important;box-shadow:inset 0 3px 4px #fff1,inset 0 -4px 5px #0004,0 4px 5px #0005!important}.layer.cheese{width:34%!important;height:7%!important;bottom:32%!important;background:linear-gradient(#ffd95d,#e8ad29)!important;border:1px solid #aa7711!important;clip-path:polygon(3% 12%,94% 0,100% 70%,57% 100%,0 74%)!important;transform:translateX(-50%) rotate(-2deg)!important;box-shadow:0 4px 4px #0005!important}.layer.topBun{width:34%!important;height:15%!important;bottom:36%!important;border-radius:55% 55% 18% 18%/80% 80% 25% 25%!important;background:radial-gradient(circle at 24% 34%,#fff0bd 0 1.5%,transparent 2%),radial-gradient(circle at 38% 24%,#fff0bd 0 1.5%,transparent 2%),radial-gradient(circle at 52% 36%,#fff0bd 0 1.5%,transparent 2%),radial-gradient(circle at 67% 24%,#fff0bd 0 1.5%,transparent 2%),radial-gradient(circle at 79% 38%,#fff0bd 0 1.5%,transparent 2%),linear-gradient(#f2c57d,#d99246)!important;border:2px solid #995b29!important;box-shadow:inset 0 7px 8px #fff4,inset 0 -6px 7px #723b1d35,0 5px 6px #0006!important}.layer img{display:none!important}
-.foodItem{overflow:hidden!important}.foodItem:before,.foodItem:after{content:"";position:absolute;left:50%;transform:translateX(-50%);pointer-events:none}#bun:before{top:16%;width:58%;height:34%;border-radius:55% 55% 15% 15%/80% 80% 20% 20%;background:radial-gradient(circle at 28% 35%,#fff0bd 0 2%,transparent 2.6%),radial-gradient(circle at 48% 23%,#fff0bd 0 2%,transparent 2.6%),radial-gradient(circle at 70% 36%,#fff0bd 0 2%,transparent 2.6%),linear-gradient(#efc27b,#d89145);border:2px solid #965a2c;box-shadow:inset 0 5px 6px #fff4,0 4px 5px #0005}#bun:after{top:49%;width:58%;height:20%;border-radius:8px 8px 16px 16px;background:linear-gradient(#e5ad66,#bc7638);border:2px solid #8d5128;box-shadow:inset 0 3px 4px #fff3,0 3px 4px #0004}#cheese:before{top:24%;width:62%;height:23%;background:linear-gradient(#ffdc62,#e9ae27);border:2px solid #a97913;transform:translateX(-50%) rotate(-5deg);box-shadow:0 6px 0 #d69a1e,0 12px 0 #c78a18,0 5px 6px #0005}.foodLabel{z-index:5}
-#transferGhost{background:none!important;border-radius:50%!important;background:linear-gradient(#754430,#4d2c21)!important;box-shadow:inset 0 4px 5px #fff1,0 4px 5px #0006!important}
-</style></head><body>
+</style>
+</head>
+<body>
 <div id="rotate">📱↻<br><br>Turn your phone sideways to play<br><b>Ben's Burgers</b></div>
 <div id="game">
 <div class="top"><div class="logo">Ben's Burgers</div><div class="stat">💵 $<span id="money">0.00</span></div><div class="stat">⭐ <span id="score">0</span></div><div class="stat">👥 <span id="served">0</span>/8</div></div>
 <div class="scene"><div class="awning"></div><div class="sign">Ben's Burgers</div><div class="menu">MENU<br><br>HAMBURGER&nbsp; $4.00<br>CHEESEBURGER $4.75<br><br>DRINKS&nbsp; $1.50<br><br>Thanks!<br>Have a great day!</div><div class="window"></div><div class="customer" id="cust" role="button" aria-label="Serve customer">🧑</div><div class="counterledge"></div><div class="bubble"><div class="name" id="name">Lou</div><div class="order" id="order">One cheeseburger, please!</div><div class="patrow"><span>Patience</span><span id="patnum">100</span></div><div class="pat"><div id="patbar"></div></div></div></div>
-<div class="kitchen">
- <div class="station"><div class="label">🔥 GRILL</div><button class="grill" id="grill" aria-label="Hot grill"><span id="grillPatty" class="grillPatty spritePatty" style="display:none"></span></button><button class="rawbin" id="raw" aria-label="Raw burger patty"></button><div class="lights"><i id="lraw" class="light red"></i><i id="lcook" class="light yellow"></i><i id="lready" class="light green"></i></div></div>
- <div class="station prepStation"><div class="label">🍽️ ASSEMBLY</div>
-   <div class="board"><div class="plate"></div><button id="plateBun" class="plateBun" aria-label="Bottom bun on plate"></button><div id="layers"></div></div>
-   <div class="foodShelf">
-     <button class="foodItem" id="bun" aria-label="Bun"><span class="foodLabel">BUNS</span></button>
-     <button class="foodItem" id="cheese" aria-label="Cheese"><span class="foodLabel">CHEESE</span></button>
-   </div>
- </div>
-</div><div class="msg" id="msg"></div></div>
-<script src="game.js?v=8"></script></body></html>
+<div class="kitchen"><div class="station"><div class="label">🔥 GRILL</div><button class="grill" id="grill" aria-label="Hot grill"><span id="grillPatty" class="grillPatty spritePatty" style="display:none"></span></button><button class="rawbin" id="raw" aria-label="Raw burger patty"></button><div class="lights"><i id="lraw" class="light red"></i><i id="lcook" class="light yellow"></i><i id="lready" class="light green"></i></div></div><div class="station prepStation"><div class="label">🍽️ ASSEMBLY</div><div class="board"><div class="plate"></div><button id="plateBun" class="plateBun" aria-label="Bottom bun on plate"></button><div id="layers"></div></div><div class="foodShelf"><button class="foodItem" id="bun" aria-label="Bun"><span class="foodLabel">BUNS</span></button><button class="foodItem" id="cheese" aria-label="Cheese"><span class="foodLabel">CHEESE</span></button></div></div></div><div class="msg" id="msg"></div></div>
+<script src="game.js?v=10"></script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;background:#111;font-family:-apple-system,system-ui,sans-serif;overflow:hidden}
+#rotate{display:none;position:fixed;inset:0;background:#171817;color:white;z-index:99;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:22px;font-weight:800}
+#game{position:relative;width:100vw;height:100dvh;max-width:1400px;margin:auto;background:#191a18;color:#fff;overflow:hidden}
+.top{height:9%;display:flex;align-items:center;background:#171817;padding:1% 2%;gap:1.5%;border-bottom:2px solid #000}
+.logo{font:italic 900 clamp(24px,4vw,52px) Georgia;color:#f0dfb8;flex:1}.stat{background:#292a28;border:1px solid #050505;border-radius:7px;padding:.7% 1.5%;font-weight:900;font-size:clamp(13px,1.7vw,23px)}
+.scene{position:absolute;left:0;right:0;top:9%;height:38%;background:linear-gradient(#222,#111);overflow:hidden}
+.awning{height:17%;background:repeating-linear-gradient(90deg,#8c211c 0 7%,#eee4cf 7% 14%);border-bottom:5px solid #4d3022}
+.sign{position:absolute;top:1.5%;left:50%;transform:translateX(-50%);width:38%;height:18%;background:#efe2c8;border:3px solid #603726;color:#90251d;display:flex;align-items:center;justify-content:center;font:italic 900 clamp(24px,4vw,55px) Georgia;z-index:5}
+.menu{position:absolute;left:2%;top:21%;width:18%;height:70%;background:#171817;border:7px solid #493728;color:#eadbb8;padding:1.5%;font:700 clamp(9px,1.1vw,15px) Georgia;line-height:1.8}
+.window{position:absolute;left:22%;right:2%;top:21%;bottom:7%;background:linear-gradient(#a9cbd9 0 42%,#809761 42% 52%,#c7c2b8 52% 72%,#686a6b 72%);border:10px solid #333;box-shadow:inset 0 0 0 2px #888}
+.counterledge{position:absolute;left:20%;right:0;bottom:4%;height:7%;background:linear-gradient(#bc8755,#70462c);border:2px solid #3b281e;z-index:9}
+.customer{position:absolute;left:45%;bottom:5%;font-size:clamp(75px,13vh,150px);z-index:7;filter:drop-shadow(0 5px 3px #0007);transition:left .5s}
+.bubble{position:absolute;right:4%;top:27%;width:31%;background:#f8f7f1;color:#171717;border:3px solid #444;border-radius:12px;padding:1.3%;z-index:10;box-shadow:0 4px 8px #0006}
+.name{font-weight:950;font-size:clamp(15px,2vw,27px)}.order{font-size:clamp(12px,1.6vw,22px);margin:.5% 0 2%}.patrow{display:flex;justify-content:space-between;font-weight:850;font-size:clamp(10px,1.2vw,16px)}.pat{height:10px;background:#ddd;border:1px solid #555;border-radius:4px;overflow:hidden}#patbar{height:100%;background:linear-gradient(90deg,#c33,#dbb344,#6a9d4e)}
+.kitchen{position:absolute;left:0;right:0;top:47%;bottom:0;display:grid;grid-template-columns:36% 64%;background:#161716;border-top:4px solid #555}
+.station{position:relative;padding:1.7% 2%;border-right:3px solid #292929}.label{font-weight:950;font-size:clamp(15px,2vw,28px);margin-bottom:1.5%}
+.grill{position:absolute;left:5%;right:5%;top:14%;height:44%;background:repeating-linear-gradient(90deg,#515452 0 18px,#292c2a 18px 24px);border:8px solid #737675;border-radius:5px;box-shadow:inset 0 7px 14px #000a;display:flex;align-items:center;justify-content:center;font-size:clamp(35px,7vw,80px)}
+.rawbin{position:absolute;left:5%;bottom:5%;width:43%;height:19%;background:#d4d5d2;border:3px solid #777;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:clamp(25px,4vw,55px)}.rawbin.selected{outline:5px solid #e3bd4b}
+.lights{position:absolute;right:5%;bottom:6%;width:44%;display:flex;justify-content:space-around}.light{width:15px;height:15px;border-radius:50%;background:#333}.light.on.red{background:#f34;box-shadow:0 0 12px #f34}.light.on.yellow{background:#fc3;box-shadow:0 0 12px #fc3}.light.on.green{background:#7d5;box-shadow:0 0 12px #7d5}
+.board{position:absolute;left:5%;right:5%;top:15%;bottom:6%;background:linear-gradient(90deg,#9a7048,#c19463,#916943);border:5px solid #60452e;border-radius:8px;box-shadow:inset 0 0 20px #0003}
+.plate{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);width:54%;height:24%;border-radius:50%;background:radial-gradient(ellipse,#fff 0 48%,#ddd 49% 70%,#fafafa 71%);border:2px solid #999;box-shadow:0 5px 8px #0007}
+.layer{position:absolute;left:50%;transform:translateX(-50%);width:38%;z-index:4;border:1px solid #533}.bottomBun{display:none}.patty{bottom:29%;height:8%;background:#593126;border-radius:9px}.cheese{bottom:37%;height:5%;background:#e2b435}.topBun{bottom:42%;height:13%;background:#dca554;border-radius:50px 50px 8px 8px}
+.ingredients{position:absolute;left:5%;right:5%;top:3%;height:10%;display:flex;gap:3%}.ingredient{flex:1;background:#333;border:2px solid #777;border-radius:5px;color:white;font-weight:900;font-size:clamp(10px,1.2vw,17px)}
+.pos{position:absolute;left:7%;top:16%;width:43%;height:34%;background:#444;border:6px solid #777;border-radius:7px;display:flex;align-items:center;justify-content:center}.screen{background:#16221e;color:#91e7af;padding:12%;font:900 clamp(16px,2vw,30px) monospace}
+.ben{position:absolute;right:6%;top:13%;font-size:clamp(44px,6.5vw,88px)}.serve{position:absolute;left:7%;right:7%;bottom:5%;height:20%;background:linear-gradient(#6e9e58,#416b35);color:white;border:2px solid #182614;border-radius:8px;font-weight:950;font-size:clamp(14px,1.8vw,25px)}
+.msg{position:absolute;left:50%;bottom:1%;transform:translateX(-50%);z-index:30;background:#000b;border-radius:10px;padding:.5% 2%;font-weight:900;opacity:0;transition:.2s}.msg.show{opacity:1}
+@media(orientation:portrait){#rotate{display:flex}}
+@media (max-height:430px) and (orientation:landscape){
+  .top{height:8%}
+  .scene{top:8%;height:37%}
+  .kitchen{top:45%}
+  .logo{font-size:clamp(20px,3.4vw,38px)}
+  .stat{padding:.45% 1.2%;font-size:clamp(11px,1.4vw,18px)}
+  .label{font-size:clamp(13px,1.7vw,22px)}
+  .ben{font-size:clamp(38px,5.5vw,70px)}
+  .serve{height:18%;bottom:4%}
+}
+
+.rawPatty{
+  display:block;
+  width:54%;
+  aspect-ratio:1.18/1;
+  border-radius:48%;
+  background:
+    radial-gradient(circle at 35% 32%,rgba(255,255,255,.2) 0 4%,transparent 5%),
+    radial-gradient(circle at 68% 65%,rgba(90,20,20,.18) 0 5%,transparent 6%),
+    repeating-radial-gradient(circle at 50% 50%,#d86c68 0 4px,#c65350 5px 8px);
+  border:3px solid #8f3c39;
+  box-shadow:inset 0 5px 8px rgba(255,255,255,.15),inset 0 -5px 8px rgba(80,0,0,.22),0 4px 7px rgba(0,0,0,.35);
+}
+.grillPatty{
+  position:absolute;
+  width:34%;
+  aspect-ratio:1.18/1;
+  border-radius:48%;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  border:3px solid rgba(60,30,20,.55);
+  box-shadow:inset 0 4px 7px rgba(255,255,255,.10),inset 0 -5px 8px rgba(0,0,0,.25),0 5px 8px rgba(0,0,0,.45);
+  transition:background .7s ease,filter .7s ease,transform .25s ease;
+  z-index:3;
+}
+.grillPatty.raw{
+  background:repeating-radial-gradient(circle at 50% 50%,#d86c68 0 4px,#c65350 5px 8px);
+}
+.grillPatty.cooking{
+  background:repeating-radial-gradient(circle at 50% 50%,#a95b43 0 4px,#8a4834 5px 8px);
+}
+.grillPatty.ready{
+  background:transparent;
+}
+.grillPatty.burned{
+  background:repeating-radial-gradient(circle at 50% 50%,#30231f 0 4px,#171312 5px 8px);
+  filter:brightness(.75);
+}
+.grill.sizzle:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 38% 28%,rgba(255,255,255,.35) 0 1px,transparent 2px),
+    radial-gradient(circle at 63% 57%,rgba(255,255,255,.28) 0 1px,transparent 2px),
+    radial-gradient(circle at 47% 72%,rgba(255,255,255,.22) 0 1px,transparent 2px);
+  animation:sizzle .45s infinite alternate;
+  pointer-events:none;
+}
+@keyframes sizzle{from{opacity:.25}to{opacity:.8}}
+
+
+.plateBun{
+  position:absolute;
+  left:50%;
+  bottom:20%;
+  transform:translateX(-50%);
+  width:38%;
+  height:9%;
+  z-index:10;
+  border:1px solid #8c5d32;
+  border-radius:6px 6px 20px 20px;
+  background:linear-gradient(#e1ad68,#c98d48);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.25),0 3px 4px rgba(0,0,0,.35);
+  cursor:pointer;
+}
+.plateBun.readyTarget{
+  outline:4px solid rgba(255,220,90,.9);
+  box-shadow:0 0 16px rgba(255,210,50,.8);
+}
+.grillPatty.ready.pickable{
+  cursor:pointer;
+  outline:4px solid rgba(126,225,90,.85);
+  box-shadow:0 0 16px rgba(105,230,80,.75),inset 0 4px 7px rgba(255,255,255,.1);
+}
+.grillPatty.ready.selectedCooked{
+  outline:5px solid #ffd75a;
+  transform:translate(-50%,-50%) scale(1.08);
+}
+
+
+/* Easier phone tap target for the bottom bun */
+.plateBun{
+  width:52%!important;
+  height:22%!important;
+  bottom:12%!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  z-index:30!important;
+}
+.plateBun:before{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:36%;
+  transform:translateX(-50%);
+  width:73%;
+  height:42%;
+  border:1px solid #8c5d32;
+  border-radius:6px 6px 20px 20px;
+  background:linear-gradient(#e1ad68,#c98d48);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.25),0 3px 4px rgba(0,0,0,.35);
+}
+.plateBun.readyTarget:before{
+  outline:5px solid rgba(255,220,90,.95);
+  box-shadow:0 0 20px rgba(255,210,50,.9),inset 0 2px 3px rgba(255,255,255,.25);
+}
+#transferGhost{
+  position:absolute;
+  z-index:60;
+  width:11%;
+  aspect-ratio:1.18/1;
+  border-radius:48%;
+  background:transparent;
+  border:2px solid #3b241b;
+  pointer-events:none;
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.45));
+  transition:left .28s ease,top .28s ease,transform .28s ease,opacity .2s ease;
+}
+
+
+.prepStation{padding-right:25%!important}
+.prepStation .board{left:3%!important;right:29%!important;top:14%!important;bottom:6%!important}
+.foodShelf{
+  position:absolute;right:2%;top:12%;bottom:6%;width:24%;
+  display:flex;flex-direction:column;gap:6%;
+  background:linear-gradient(#bfc3c1,#8f9492);
+  border:3px solid #626665;border-radius:6px;padding:5%;
+  box-shadow:inset 0 0 12px rgba(0,0,0,.25)
+}
+.foodItem{
+  flex:1;position:relative;border:2px solid #666;border-radius:6px;
+  background:linear-gradient(#efefeb,#cfd1ce);
+  cursor:pointer;box-shadow:0 3px 5px rgba(0,0,0,.3)
+}
+.foodItem:active{transform:translateY(2px)}
+.foodLabel{
+  position:absolute;left:0;right:0;bottom:4%;
+  font-size:clamp(9px,1vw,14px);font-weight:950;color:#383838
+}
+.bunTopFood{
+  position:absolute;left:18%;right:18%;top:18%;height:28%;
+  background:
+    radial-gradient(circle at 30% 35%,#f7e2a5 0 2%,transparent 3%),
+    radial-gradient(circle at 55% 27%,#f7e2a5 0 2%,transparent 3%),
+    radial-gradient(circle at 70% 42%,#f7e2a5 0 2%,transparent 3%),
+    linear-gradient(#e7b56f,#c88c43);
+  border:2px solid #9b652f;border-radius:60px 60px 12px 12px;
+  box-shadow:inset 0 4px 5px rgba(255,255,255,.25),0 3px 4px rgba(0,0,0,.25)
+}
+.bunBottomFood{
+  position:absolute;left:18%;right:18%;top:47%;height:18%;
+  background:linear-gradient(#e1aa64,#bf8440);
+  border:2px solid #94602e;border-radius:8px 8px 18px 18px;
+}
+.cheeseStack{position:absolute;left:18%;right:18%;top:20%;height:48%}
+.cheeseStack i{
+  position:absolute;left:0;right:0;height:28%;
+  background:linear-gradient(#f4cb50,#d9a927);
+  border:2px solid #aa7a15;border-radius:3px;
+  box-shadow:0 2px 3px rgba(0,0,0,.25)
+}
+.cheeseStack i:nth-child(1){top:0;transform:rotate(-3deg)}
+.cheeseStack i:nth-child(2){top:24%;transform:rotate(2deg)}
+.cheeseStack i:nth-child(3){top:48%;transform:rotate(-1deg)}
+.customer{cursor:pointer}
+.customer.readyToServe{
+  filter:drop-shadow(0 0 12px rgba(125,235,90,.9));
+}
+
+
+/* --- 3D CARTOON INGREDIENT UPGRADE --- */
+
+/* Raw patty bin */
+.rawbin{
+  background:linear-gradient(#d8dad7,#b8bbb7)!important;
+  border:3px solid #747876!important;
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,.65),
+    inset 0 -4px 7px rgba(0,0,0,.12),
+    0 4px 8px rgba(0,0,0,.35)!important;
+}
+.rawPatty{
+  width:58%!important;
+  aspect-ratio:1.18/1;
+  border-radius:48%;
+  background:
+    radial-gradient(circle at 32% 25%,rgba(255,255,255,.35) 0 3%,transparent 4%),
+    radial-gradient(circle at 70% 62%,rgba(100,15,20,.16) 0 5%,transparent 6%),
+    repeating-radial-gradient(circle at 48% 50%,
+      #e67872 0 4px,
+      #ce5c58 5px 8px,
+      #bb4b49 9px 11px)!important;
+  border:3px solid #943d3b!important;
+  box-shadow:
+    inset 0 7px 10px rgba(255,255,255,.18),
+    inset 0 -8px 12px rgba(95,0,0,.24),
+    0 6px 9px rgba(0,0,0,.38)!important;
+}
+
+/* Patty on grill gets thicker and more rounded */
+.grillPatty{
+  width:36%!important;
+  border-radius:46%!important;
+  border:3px solid rgba(55,25,15,.6)!important;
+  box-shadow:
+    inset 0 5px 7px rgba(255,255,255,.12),
+    inset 0 -8px 11px rgba(0,0,0,.32),
+    0 7px 10px rgba(0,0,0,.5)!important;
+}
+.grillPatty.raw{
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.22) 0 4%,transparent 5%),
+    repeating-radial-gradient(circle at 50% 50%,#e2756e 0 4px,#c85450 5px 8px)!important;
+}
+.grillPatty.cooking{
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.10) 0 3%,transparent 4%),
+    repeating-radial-gradient(circle at 50% 50%,#a95b43 0 4px,#864532 5px 8px)!important;
+}
+.grillPatty.ready{
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.08) 0 3%,transparent 4%),
+    repeating-radial-gradient(circle at 50% 50%,#744331 0 4px,#533026 5px 8px)!important;
+}
+.grillPatty.burned{
+  background:repeating-radial-gradient(circle at 50% 50%,#2c211d 0 4px,#151211 5px 8px)!important;
+}
+
+/* Bun + cheese storage bay */
+.foodShelf{
+  background:linear-gradient(145deg,#c8ccca,#939896)!important;
+  border:3px solid #626665!important;
+  box-shadow:
+    inset 0 3px 4px rgba(255,255,255,.45),
+    inset 0 -8px 12px rgba(0,0,0,.18),
+    0 5px 10px rgba(0,0,0,.35)!important;
+}
+.foodItem{
+  overflow:visible!important;
+  background:linear-gradient(#efefeb,#cfd1ce)!important;
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.8),
+    0 5px 8px rgba(0,0,0,.32)!important;
+}
+
+/* Full 3D bun instead of flat halves */
+.bunTopFood{
+  left:14%!important;
+  right:14%!important;
+  top:13%!important;
+  height:38%!important;
+  background:
+    radial-gradient(circle at 23% 34%,#fff0bf 0 1.7%,transparent 2.2%),
+    radial-gradient(circle at 39% 25%,#fff0bf 0 1.7%,transparent 2.2%),
+    radial-gradient(circle at 55% 38%,#fff0bf 0 1.7%,transparent 2.2%),
+    radial-gradient(circle at 72% 26%,#fff0bf 0 1.7%,transparent 2.2%),
+    radial-gradient(circle at 82% 42%,#fff0bf 0 1.7%,transparent 2.2%),
+    linear-gradient(180deg,#f1c47d 0%,#dfaa5d 52%,#c7833d 100%)!important;
+  border:2px solid #9b622f!important;
+  border-radius:70% 70% 20% 20% / 85% 85% 25% 25%!important;
+  box-shadow:
+    inset 0 8px 10px rgba(255,255,255,.28),
+    inset 0 -7px 8px rgba(112,60,12,.18),
+    0 6px 8px rgba(0,0,0,.30)!important;
+}
+.bunBottomFood{
+  left:14%!important;
+  right:14%!important;
+  top:49%!important;
+  height:21%!important;
+  background:linear-gradient(#e8b66d,#c8843f)!important;
+  border:2px solid #915b2c!important;
+  border-radius:10px 10px 20px 20px!important;
+  box-shadow:
+    inset 0 4px 5px rgba(255,255,255,.22),
+    inset 0 -5px 7px rgba(102,48,10,.18),
+    0 4px 6px rgba(0,0,0,.25)!important;
+}
+
+/* Cheese stack: thicker, glossy slices */
+.cheeseStack{
+  left:13%!important;
+  right:13%!important;
+  top:16%!important;
+  height:56%!important;
+}
+.cheeseStack i{
+  height:30%!important;
+  background:linear-gradient(180deg,#ffd85b 0%,#efbf37 58%,#d99e1f 100%)!important;
+  border:2px solid #a87510!important;
+  border-radius:4px!important;
+  box-shadow:
+    inset 0 3px 4px rgba(255,255,255,.30),
+    inset 0 -3px 4px rgba(120,70,0,.14),
+    0 4px 5px rgba(0,0,0,.28)!important;
+}
+.cheeseStack i:nth-child(1){top:0!important;transform:rotate(-5deg)!important}
+.cheeseStack i:nth-child(2){top:25%!important;transform:rotate(3deg)!important}
+.cheeseStack i:nth-child(3){top:50%!important;transform:rotate(-2deg)!important}
+
+/* Bottom bun on plate */
+.plateBun:before{
+  background:
+    linear-gradient(180deg,#efc27b 0%,#dfa45d 55%,#c6813c 100%)!important;
+  border:2px solid #8e582a!important;
+  box-shadow:
+    inset 0 4px 5px rgba(255,255,255,.24),
+    inset 0 -4px 7px rgba(90,42,8,.16),
+    0 5px 6px rgba(0,0,0,.30)!important;
+}
+
+/* Burger layers on the plate */
+.layer.patty{
+  background:linear-gradient(180deg,#764733,#4d2c22)!important;
+  border:2px solid #362019!important;
+  box-shadow:
+    inset 0 3px 4px rgba(255,255,255,.06),
+    inset 0 -4px 5px rgba(0,0,0,.2),
+    0 3px 4px rgba(0,0,0,.32)!important;
+}
+.layer.cheese{
+  background:linear-gradient(180deg,#ffd550,#e6b12d)!important;
+  border:1px solid #aa7710!important;
+  box-shadow:0 3px 4px rgba(0,0,0,.28)!important;
+}
+.layer.topBun{
+  background:
+    radial-gradient(circle at 28% 32%,#fff0bf 0 2%,transparent 2.5%),
+    radial-gradient(circle at 44% 23%,#fff0bf 0 2%,transparent 2.5%),
+    radial-gradient(circle at 62% 34%,#fff0bf 0 2%,transparent 2.5%),
+    radial-gradient(circle at 77% 25%,#fff0bf 0 2%,transparent 2.5%),
+    linear-gradient(#efc176,#cb8740)!important;
+  border:2px solid #8d592b!important;
+  box-shadow:
+    inset 0 5px 7px rgba(255,255,255,.22),
+    0 4px 6px rgba(0,0,0,.30)!important;
+}
+
+
+/* REAL IMAGE-BASED GAME SPRITES */
+.rawSprite{
+  width:64%;height:88%;object-fit:contain;filter:drop-shadow(0 6px 5px rgba(0,0,0,.42));
+  pointer-events:none;
+}
+.spritePatty{
+  position:absolute!important;left:50%!important;top:50%!important;
+  width:38%!important;height:72%!important;object-fit:contain!important;
+  transform:translate(-50%,-50%)!important;border:0!important;background:none!important;
+  box-shadow:none!important;filter:drop-shadow(0 6px 6px rgba(0,0,0,.48));
+}
+.spritePatty.selectedCooked{
+  outline:none!important;
+  filter:drop-shadow(0 0 9px #ffd957) drop-shadow(0 6px 6px rgba(0,0,0,.48))!important;
+  transform:translate(-50%,-50%) scale(1.08)!important;
+}
+.spritePatty.pickable{
+  outline:none!important;
+  filter:drop-shadow(0 0 9px #81df62) drop-shadow(0 6px 6px rgba(0,0,0,.48));
+}
+.plateBun{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  width:55%!important;height:28%!important;bottom:8%!important;
+}
+.plateBun:before{display:none!important}
+.plateBun img{
+  width:80%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.34));pointer-events:none;
+}
+.plateBun.readyTarget img{
+  filter:drop-shadow(0 0 10px #ffda50) drop-shadow(0 5px 5px rgba(0,0,0,.34));
+}
+.stockSprite{
+  position:absolute;left:7%;right:7%;top:5%;width:86%;height:77%;object-fit:contain;
+  filter:drop-shadow(0 6px 5px rgba(0,0,0,.33));pointer-events:none;
+}
+.foodLabel{z-index:5;background:rgba(245,245,240,.82);border-radius:4px;padding:1px 3px}
+.bunTopFood,.bunBottomFood,.cheeseStack{display:none!important}
+.layer{
+  border:0!important;background:none!important;box-shadow:none!important;
+  height:auto!important;filter:drop-shadow(0 4px 4px rgba(0,0,0,.36));
+}
+.layer.bottomBun{display:none!important}
+.layer.patty{width:39%!important;bottom:27%!important}
+.layer.cheese{width:42%!important;bottom:34%!important;transform:translateX(-50%) rotate(-2deg)!important}
+.layer.topBun{width:43%!important;bottom:39%!important}
+.layer img{display:block;width:100%;height:auto;pointer-events:none}

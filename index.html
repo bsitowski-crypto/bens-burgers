@@ -1,1 +1,24 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Ben's Burgers"><title>Ben's Burgers</title><style>html,body{margin:0;height:100%;background:#17302a;font-family:system-ui;color:white}body{display:grid;place-items:center}.card{text-align:center;background:#27483e;padding:30px;border-radius:20px;box-shadow:0 10px 30px #0008}h1{font-size:44px;margin:0 0 12px}.burger{font-size:80px}p{opacity:.85}</style></head><body><div class="card"><div class="burger">🍔</div><h1>Ben's Burgers</h1><p>GitHub Pages is connected.</p><p>The full game is coming next.</p></div></body></html>
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Ben's Burgers Landscape</title>
+<link rel="stylesheet" href="style.css?v=6"></head><body>
+<div id="rotate">📱↻<br><br>Turn your phone sideways to play<br><b>Ben's Burgers</b></div>
+<div id="game">
+<div class="top"><div class="logo">Ben's Burgers</div><div class="stat">💵 $<span id="money">0.00</span></div><div class="stat">⭐ <span id="score">0</span></div><div class="stat">👥 <span id="served">0</span>/8</div></div>
+<div class="scene"><div class="awning"></div><div class="sign">Ben's Burgers</div><div class="menu">MENU<br><br>HAMBURGER&nbsp; $4.00<br>CHEESEBURGER $4.75<br><br>DRINKS&nbsp; $1.50<br><br>Thanks!<br>Have a great day!</div><div class="window"></div><div class="customer" id="cust" role="button" aria-label="Serve customer">🧑</div><div class="counterledge"></div><div class="bubble"><div class="name" id="name">Lou</div><div class="order" id="order">One cheeseburger, please!</div><div class="patrow"><span>Patience</span><span id="patnum">100</span></div><div class="pat"><div id="patbar"></div></div></div></div>
+<div class="kitchen">
+ <div class="station"><div class="label">🔥 GRILL</div><button class="grill" id="grill" aria-label="Hot grill"><img id="grillPatty" class="grillPatty spritePatty" style="display:none" alt=""></button><button class="rawbin" id="raw" aria-label="Raw burger patty"><img class="rawSprite" src="assets/raw-patty.png" alt="raw burger patty"></button><div class="lights"><i id="lraw" class="light red"></i><i id="lcook" class="light yellow"></i><i id="lready" class="light green"></i></div></div>
+ <div class="station prepStation"><div class="label">🍽️ ASSEMBLY</div>
+   <div class="board"><div class="plate"></div><button id="plateBun" class="plateBun" aria-label="Bottom bun on plate"><img src="assets/bottom-bun.png" alt="bottom bun"></button><div id="layers"></div></div>
+   <div class="foodShelf">
+     <button class="foodItem" id="bun" aria-label="Bun">
+       <img class="stockSprite bunStockSprite" src="assets/buns-stock.png" alt="buns"><span class="foodLabel">BUNS</span>
+     </button>
+     <button class="foodItem" id="cheese" aria-label="Cheese">
+       <img class="stockSprite cheeseStockSprite" src="assets/cheese-stock.png" alt="cheese slices"><span class="foodLabel">CHEESE</span>
+     </button>
+   </div>
+ </div>
+
+</div><div class="msg" id="msg"></div></div>
+<script src="game.js?v=6"></script></body></html>

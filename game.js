@@ -1,115 +1,39 @@
-const SPRITES={
-raw:"assets/raw-patty.png",cooking:"assets/cooking-patty.png",
-ready:"assets/cooked-patty.png",burned:"assets/burned-patty.png",
-bottomBun:"assets/bottom-bun.png",topBun:"assets/top-bun.png",
-cheese:"assets/cheese.png",bunStock:"assets/buns-stock.png",
-cheeseStock:"assets/cheese-stock.png"};
+const SPRITES={raw:"assets/raw-patty.png",cooking:"assets/cooking-patty.png",ready:"assets/cooked-patty.png",burned:"assets/burned-patty.png",bottomBun:"assets/bottom-bun.png",topBun:"assets/top-bun.png",cheese:"assets/cheese.png",bunStock:"assets/buns-stock.png",cheeseStock:"assets/cheese-stock.png"};
 const $=x=>document.getElementById(x);let money=0,score=0,served=0,patience=100,order='cheese',selected=false,cookedSelected=false,grill='empty',built=['bottomBun'],timer,gt;
 const names=['Lou','Maya','Eddie','Tina','Sam','Nora','Gus','Penny'],people=['🧑','👩','🧔','👩‍🦱','👨','👩‍🦰','🧑‍🦱','👨‍🦱'];
 
+const realism=document.createElement('style');
+realism.textContent=`
+.layer{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;border:0!important;box-shadow:none!important}.layer img{display:none!important}
+.layer.patty{width:30%!important;height:8.5%!important;border-radius:48%!important;background:repeating-linear-gradient(15deg,transparent 0 11px,#2b17128a 12px 14px,transparent 15px 23px),radial-gradient(ellipse at 44% 34%,#88513c,#523025 72%)!important;border:2px solid #3b211a!important;box-shadow:inset 0 3px 4px #fff1,inset 0 -4px 5px #0005,0 4px 5px #0006!important}
+.layer.cheese{width:33%!important;height:6%!important;background:linear-gradient(145deg,#ffe36f 0 20%,#f5c33d 48%,#dc9917 100%)!important;border:1px solid #aa7711!important;clip-path:polygon(3% 15%,94% 2%,100% 67%,62% 100%,0 76%)!important;transform:translateX(-50%) rotate(-1.5deg)!important;box-shadow:inset 0 2px 2px #fff7,0 3px 4px #0005!important}
+.layer.bacon{width:33%!important;height:6.2%!important;background:repeating-linear-gradient(8deg,#8e211c 0 7%,#d6543b 8% 16%,#f0a27f 17% 22%,#b42f27 23% 33%,#efb08f 34% 39%,#8f211d 40% 51%)!important;border-radius:18px 7px 16px 6px!important;border:1px solid #64211b!important;transform:translateX(-50%) rotate(1deg)!important;box-shadow:inset 0 2px 3px #fff2,0 3px 4px #0005!important}.layer.bacon:after{content:"";position:absolute;left:4%;right:4%;top:28%;height:40%;border-radius:12px;background:repeating-linear-gradient(-9deg,transparent 0 8%,#f5c1a199 9% 14%,transparent 15% 26%)}
+.layer.topBun{width:33%!important;height:14%!important;border-radius:55% 55% 18% 18%/80% 80% 25% 25%!important;background:radial-gradient(circle at 24% 34%,#fff4cf 0 1.3%,transparent 1.9%),radial-gradient(circle at 38% 24%,#fff4cf 0 1.4%,transparent 2%),radial-gradient(circle at 52% 36%,#fff4cf 0 1.3%,transparent 1.9%),radial-gradient(circle at 67% 24%,#fff4cf 0 1.4%,transparent 2%),radial-gradient(circle at 79% 38%,#fff4cf 0 1.3%,transparent 1.9%),linear-gradient(#f4cf8e 0 18%,#dfa456 58%,#bd7234 100%)!important;border:2px solid #995b29!important;box-shadow:inset 0 7px 8px #fff5,inset 0 -6px 7px #723b1d40,0 5px 6px #0006!important}
+.foodShelf{gap:3%!important;padding:3%!important}.foodItem{min-height:0!important;overflow:hidden!important}.foodLabel{z-index:6!important;background:rgba(245,245,240,.84);border-radius:4px;padding:1px 3px}
+#bacon:before{content:"";position:absolute;left:50%;top:17%;transform:translateX(-50%);width:66%;height:13%;border-radius:12px;background:repeating-linear-gradient(8deg,#9a271f 0 8%,#dd6244 9% 18%,#f2a98a 19% 24%,#af3429 25% 36%);border:1px solid #6d211b;box-shadow:0 8px 0 #b33b2e,0 16px 0 #8f2822,0 4px 5px #0005}
+#bacon:after{content:"";position:absolute;left:50%;top:19%;transform:translateX(-50%);width:62%;height:8%;border-radius:10px;background:repeating-linear-gradient(-8deg,transparent 0 9%,#f6c6a899 10% 16%,transparent 17% 29%)}
+`;
+document.head.appendChild(realism);
 
-function animatePattyToBun(done){
-  const gp=$('grillPatty');
-  const bun=$('plateBun');
-  const game=$('game');
-  const gr=gp.getBoundingClientRect(), br=bun.getBoundingClientRect(), rr=game.getBoundingClientRect();
+const shelf=document.querySelector('.foodShelf');
+if(shelf&&!$('bacon')){const b=document.createElement('button');b.className='foodItem';b.id='bacon';b.setAttribute('aria-label','Bacon');b.innerHTML='<span class="foodLabel">BACON</span>';shelf.appendChild(b)}
 
-  const ghost=document.createElement('div');
-  ghost.id='transferGhost';ghost.style.backgroundImage='url('+SPRITES.ready+')';ghost.style.backgroundSize='contain';ghost.style.backgroundRepeat='no-repeat';ghost.style.backgroundPosition='center';
-  ghost.style.left=((gr.left + gr.width/2 - rr.left)/rr.width*100)+'%';
-  ghost.style.top=((gr.top + gr.height/2 - rr.top)/rr.height*100)+'%';
-  ghost.style.transform='translate(-50%,-50%) scale(1)';
-  game.appendChild(ghost);
-
-  requestAnimationFrame(()=>{
-    ghost.style.left=((br.left + br.width/2 - rr.left)/rr.width*100)+'%';
-    ghost.style.top=((br.top + br.height*0.60 - rr.top)/rr.height*100)+'%';
-    ghost.style.transform='translate(-50%,-50%) scale(.88)';
-  });
-
-  setTimeout(()=>{
-    ghost.style.opacity='0';
-    setTimeout(()=>{ghost.remove();done()},180);
-  },320);
-}
-
-function showGrillPatty(state){
-  const p=$('grillPatty');
-  if(state==='empty'){
-    p.style.display='none';
-    p.className='grillPatty spritePatty';
-    p.removeAttribute('src');
-    $('grill').classList.remove('sizzle');
-    return;
-  }
-  p.style.display='block';
-  p.src=SPRITES[state];
-  p.className='grillPatty spritePatty '+state;
-  if(state==='ready') p.classList.add('pickable');
-  if(state==='raw'||state==='cooking') $('grill').classList.add('sizzle');
-  else $('grill').classList.remove('sizzle');
-}
-
+function targetForOrder(){if(order==='bacon')return ['bottomBun','patty','cheese','bacon','topBun'];if(order==='cheese')return ['bottomBun','patty','cheese','topBun'];return ['bottomBun','patty','topBun']}
+function nextNeeded(){return targetForOrder()[built.length]}
+function animatePattyToBun(done){const gp=$('grillPatty'),bun=$('plateBun'),game=$('game');const gr=gp.getBoundingClientRect(),br=bun.getBoundingClientRect(),rr=game.getBoundingClientRect();const ghost=document.createElement('div');ghost.id='transferGhost';ghost.style.left=((gr.left+gr.width/2-rr.left)/rr.width*100)+'%';ghost.style.top=((gr.top+gr.height/2-rr.top)/rr.height*100)+'%';ghost.style.transform='translate(-50%,-50%) scale(1)';game.appendChild(ghost);requestAnimationFrame(()=>{ghost.style.left=((br.left+br.width/2-rr.left)/rr.width*100)+'%';ghost.style.top=((br.top+br.height*.60-rr.top)/rr.height*100)+'%';ghost.style.transform='translate(-50%,-50%) scale(.88)'});setTimeout(()=>{ghost.style.opacity='0';setTimeout(()=>{ghost.remove();done()},180)},320)}
+function showGrillPatty(state){const p=$('grillPatty');if(state==='empty'){p.style.display='none';p.className='grillPatty spritePatty';$('grill').classList.remove('sizzle');return}p.style.display='block';p.className='grillPatty spritePatty '+state;if(state==='ready')p.classList.add('pickable');if(state==='raw'||state==='cooking')$('grill').classList.add('sizzle');else $('grill').classList.remove('sizzle')}
 function flash(t){let m=$('msg');m.textContent=t;m.classList.add('show');clearTimeout(m.t);m.t=setTimeout(()=>m.classList.remove('show'),1100)}
 function hud(){$('money').textContent=money.toFixed(2);$('score').textContent=score;$('served').textContent=served}
 function lights(s){['lraw','lcook','lready'].forEach(x=>$(x).classList.remove('on'));if(s==='raw')$('lraw').classList.add('on');if(s==='cook')$('lcook').classList.add('on');if(s==='ready')$('lready').classList.add('on')}
-
-function updateServeHint(){
-  const target=order==='cheese'?['bottomBun','patty','cheese','topBun']:['bottomBun','patty','topBun'];
-  const ok=JSON.stringify(built)===JSON.stringify(target);
-  $('cust').classList.toggle('readyToServe',ok);
-}
-
-function render(){
-  $('layers').innerHTML='';
-  built.forEach(x=>{
-    if(x==='bottomBun') return;
-    let d=document.createElement('div');
-    d.className='layer '+x;
-    let im=document.createElement('img');
-    im.alt=x;
-    im.src=(x==='patty' ? SPRITES.ready : SPRITES[x]);
-    d.appendChild(im);
-    $('layers').appendChild(d);
-  });
-  updateServeHint();
-}
-function next(){built=['bottomBun'];render();selected=false;cookedSelected=false;$('plateBun').classList.remove('readyTarget');$('raw').classList.remove('selected');grill='empty';lights('');showGrillPatty('empty');order=Math.random()<.65?'cheese':'plain';let i=served%names.length;$('name').textContent=names[i];$('cust').textContent=people[i];$('order').textContent=order==='cheese'?'One cheeseburger, please!':'One hamburger, please!';patience=100;clearInterval(timer);timer=setInterval(()=>{patience=Math.max(0,patience-.7);$('patnum').textContent=Math.round(patience);$('patbar').style.width=patience+'%';if(!patience){clearInterval(timer);served++;hud();flash('Customer left!');setTimeout(next,700)}},300)}
-
-$('grillPatty').onclick=(e)=>{
-  e.stopPropagation();
-  if(grill!=='ready'){flash('Wait until the patty is fully cooked');return}
-  cookedSelected=true;
-  $('grillPatty').classList.add('selectedCooked');
-  $('plateBun').classList.add('readyTarget');
-  flash('Cooked patty selected — tap the bottom bun on the plate');
-};
-$('plateBun').onclick=()=>{
-  if(!cookedSelected){
-    if(grill==='ready') flash('Tap the cooked patty on the grill first');
-    else flash('Cook a patty first');
-    return;
-  }
-  if(built.includes('patty')) return;
-
-  cookedSelected=false;
-  $('plateBun').classList.remove('readyTarget');
-  $('grillPatty').classList.remove('selectedCooked');
-
-  clearTimeout(gt);
-  animatePattyToBun(()=>{
-    grill='empty';
-    lights('');
-    showGrillPatty('empty');
-    built=['bottomBun','patty'];
-    render();
-    flash('Patty placed on the bottom bun!');
-  });
-};
-
+function updateServeHint(){const ok=JSON.stringify(built)===JSON.stringify(targetForOrder());$('cust').classList.toggle('readyToServe',ok)}
+function render(){const holder=$('layers');holder.innerHTML='';let y=25;built.forEach(x=>{if(x==='bottomBun')return;let d=document.createElement('div');d.className='layer '+x;d.style.bottom=y+'%';holder.appendChild(d);if(x==='patty')y+=6.5;else if(x==='cheese')y+=4;else if(x==='bacon')y+=4.5});updateServeHint()}
+function next(){built=['bottomBun'];render();selected=false;cookedSelected=false;$('plateBun').classList.remove('readyTarget');$('raw').classList.remove('selected');grill='empty';lights('');showGrillPatty('empty');const r=Math.random();order=r<.48?'cheese':r<.75?'plain':'bacon';let i=served%names.length;$('name').textContent=names[i];$('cust').textContent=people[i];$('order').textContent=order==='bacon'?'One bacon cheeseburger, please!':order==='cheese'?'One cheeseburger, please!':'One hamburger, please!';patience=100;clearInterval(timer);timer=setInterval(()=>{patience=Math.max(0,patience-.7);$('patnum').textContent=Math.round(patience);$('patbar').style.width=patience+'%';if(!patience){clearInterval(timer);served++;hud();flash('Customer left!');setTimeout(next,700)}},300)}
+$('grillPatty').onclick=e=>{e.stopPropagation();if(grill!=='ready'){flash('Wait until the patty is fully cooked');return}cookedSelected=true;$('grillPatty').classList.add('selectedCooked');$('plateBun').classList.add('readyTarget');flash('Cooked patty selected — tap the bottom bun')};
+$('plateBun').onclick=()=>{if(!cookedSelected){flash(grill==='ready'?'Tap the cooked patty first':'Cook a patty first');return}if(built.includes('patty'))return;cookedSelected=false;$('plateBun').classList.remove('readyTarget');$('grillPatty').classList.remove('selectedCooked');clearTimeout(gt);animatePattyToBun(()=>{grill='empty';lights('');showGrillPatty('empty');built=['bottomBun','patty'];render();flash('Patty placed on bun!')})};
 $('raw').onclick=()=>{if(grill!=='empty')return flash('There is already a patty on the grill');selected=true;$('raw').classList.add('selected');flash('Raw patty picked up')};
 $('grill').onclick=()=>{if(grill==='burned'){grill='empty';lights('');showGrillPatty('empty');return flash('Burned patty tossed')}if(grill!=='empty')return flash(grill==='ready'?'Patty is ready!':'Patty is cooking…');if(!selected)return flash('Tap the raw patty first');selected=false;$('raw').classList.remove('selected');grill='raw';lights('raw');showGrillPatty('raw');flash('Patty on grill');gt=setTimeout(()=>{grill='cook';lights('cook');showGrillPatty('cooking');gt=setTimeout(()=>{grill='ready';lights('ready');showGrillPatty('ready');flash('Patty ready!');gt=setTimeout(()=>{if(grill==='ready'){grill='burned';lights('');showGrillPatty('burned');flash('Patty burned!')}},7000)},5800)},1200)};
-$('bun').onclick=()=>{if(!built.length){built=['bottomBun'];render();return}let target=order==='cheese'?3:2;if(built.length===target){built.push('topBun');render();return}if(built.length===1){return flash(grill==='ready'?'Tap the cooked patty, then tap the bottom bun':'Cook the patty first')}flash('Add cheese next')};
-$('cheese').onclick=()=>{if(order!=='cheese')return flash('This customer did not order cheese');if(built.length!==2)return flash('Add bun and cooked patty first');built.push('cheese');render()};
-$('cust').onclick=()=>{let target=order==='cheese'?['bottomBun','patty','cheese','topBun']:['bottomBun','patty','topBun'];if(JSON.stringify(built)!==JSON.stringify(target))return flash('Finish the burger first, then tap the customer');clearInterval(timer);let earn=4.75+2+patience/50;money+=earn;score+=Math.round(patience);served++;hud();flash('Served to '+$('name').textContent+'! +$'+earn.toFixed(2));setTimeout(next,700)};
+$('bun').onclick=()=>{if(nextNeeded()==='topBun'){built.push('topBun');render();return}if(built.length===1)return flash(grill==='ready'?'Tap the cooked patty, then the bun':'Cook the patty first');flash('Add '+(nextNeeded()==='cheese'?'cheese':nextNeeded()==='bacon'?'bacon':'the next ingredient')+' first')};
+$('cheese').onclick=()=>{if(nextNeeded()!=='cheese')return flash(order==='plain'?'No cheese on this order':nextNeeded()==='bacon'?'Add bacon next':'Add the patty first');built.push('cheese');render()};
+$('bacon').onclick=()=>{if(order!=='bacon')return flash('This customer did not order bacon');if(nextNeeded()!=='bacon')return flash('Add cheese first');built.push('bacon');render()};
+$('cust').onclick=()=>{if(JSON.stringify(built)!==JSON.stringify(targetForOrder()))return flash('Finish the burger first, then tap the customer');clearInterval(timer);const base=order==='plain'?4:order==='cheese'?4.75:5.75;let earn=base+2+patience/50;money+=earn;score+=Math.round(patience);served++;hud();flash('Served to '+$('name').textContent+'! +$'+earn.toFixed(2));setTimeout(next,700)};
 showGrillPatty('empty');hud();next();

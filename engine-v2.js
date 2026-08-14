@@ -18,11 +18,11 @@ const ASSETS={
  sauce:'assets/sauce-drizzle.png'
 };
 const IMAGES={};
-function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=10'})))}
+function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=11'})))}
 
 const CATALOG={
  patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:232,h:68,rise:29}},
- bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:230,h:36,rise:12}},
+ bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:254,h:44,rise:14}},
  cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:238,h:48,rise:12}},
  sauce:{id:'sauce',label:'SAUCE',asset:'sauce',visual:{w:205,h:22,rise:5}},
  topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:228,h:86,rise:0}},
@@ -33,7 +33,7 @@ const RECIPES={
  hamburger:{price:4,request:'One hamburger with burger sauce, please!',layers:['bottomBun','patty','sauce','topBun']},
  cheeseburger:{price:4.75,request:'One cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','sauce','topBun']},
  baconCheese:{price:5.75,request:'One bacon cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','sauce','bacon','topBun']},
- baconSandwich:{price:4.50,request:'One bacon sandwich with burger sauce, please!',layers:['bottomBun','bacon','sauce','topBun']},
+ baconSandwich:{price:4.50,request:'One bacon sandwich with double bacon and burger sauce, please!',layers:['bottomBun','bacon','bacon','sauce','topBun']},
  doubleCheeseburger:{price:6.75,request:'One double cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','patty','cheese','sauce','topBun']}
 };
 const CUSTOMERS=[['Lou','🧑'],['Maya','👩'],['Eddie','🧔'],['Tina','👩‍🦱'],['Sam','👨'],['Nora','👩‍🦰'],['Gus','🧑‍🦱'],['Penny','👨‍🦱'],['Bea','👵'],['Dex','🤠']];
@@ -62,7 +62,7 @@ function grill(i,x,y,w,h){
   g.stage=e>d.cookMs+d.burnMs?'burned':e>d.cookMs?'cooked':e>d.cookMs*.35?'cooking':'raw';
   const asset=g.stage==='raw'?d.raw:g.stage==='cooking'?d.cooking:g.stage==='cooked'?d.cooked:d.burned;
   if(g.type==='patty') fit(IMAGES[asset],x+42,y+31,w-84,h-62);
-  else fit(IMAGES[asset],x+25,y+24,w-50,h-48);
+  else fit(IMAGES[asset],x+18,y+18,w-36,h-36);
   if(g.stage==='cooked'){ctx.strokeStyle=state.selectedCooked===i?'#f1c84b':'#65d25c';ctx.lineWidth=6;ctx.strokeRect(x+5,y+5,w-10,h-10)}
  }
  hit('grill',x,y,w,h,{i});

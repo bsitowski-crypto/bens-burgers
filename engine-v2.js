@@ -18,10 +18,8 @@ const ASSETS={
  sauce:'assets/sauce-drizzle.png'
 };
 const IMAGES={};
-function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=9'})))}
+function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=10'})))}
 
-/* Assembly dimensions are exact sprite sizes. `rise` is the physical thickness that
-   ingredient adds to the stack, independent from the artwork's drawing height. */
 const CATALOG={
  patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:232,h:68,rise:29}},
  bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:230,h:36,rise:12}},
@@ -30,10 +28,13 @@ const CATALOG={
  topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:228,h:86,rise:0}},
  bottomBun:{id:'bottomBun',label:'BUNS',asset:'bottomBun',visual:{w:228,h:66,rise:31}}
 };
+
 const RECIPES={
  hamburger:{price:4,request:'One hamburger with burger sauce, please!',layers:['bottomBun','patty','sauce','topBun']},
  cheeseburger:{price:4.75,request:'One cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','sauce','topBun']},
- baconCheese:{price:5.75,request:'One bacon cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','sauce','bacon','topBun']}
+ baconCheese:{price:5.75,request:'One bacon cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','sauce','bacon','topBun']},
+ baconSandwich:{price:4.50,request:'One bacon sandwich with burger sauce, please!',layers:['bottomBun','bacon','sauce','topBun']},
+ doubleCheeseburger:{price:6.75,request:'One double cheeseburger with burger sauce, please!',layers:['bottomBun','patty','cheese','patty','cheese','sauce','topBun']}
 };
 const CUSTOMERS=[['Lou','🧑'],['Maya','👩'],['Eddie','🧔'],['Tina','👩‍🦱'],['Sam','👨'],['Nora','👩‍🦰'],['Gus','🧑‍🦱'],['Penny','👨‍🦱'],['Bea','👵'],['Dex','🤠']];
 const state={money:0,score:0,served:0,patience:100,recipe:RECIPES.cheeseburger,built:[],selectedSource:null,selectedCooked:null,grill:[null,null],customerIndex:0,last:performance.now()};
@@ -49,7 +50,7 @@ function drawExact(img,x,y,w,h){if(!img)return false;ctx.drawImage(img,x,y,w,h);
 function rr(x,y,w,h,r,f,s){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=f;ctx.fill();if(s){ctx.strokeStyle=s;ctx.lineWidth=3;ctx.stroke()}}
 function text(t,x,y,z=22,a='center'){ctx.fillStyle='#eee';ctx.font=`900 ${z}px Arial`;ctx.textAlign=a;ctx.textBaseline='middle';ctx.fillText(t,x,y)}
 function hit(id,x,y,w,h,d={}){hits.push({id,x,y,w,h,...d})}
-function bin(id,label,asset,x,y,w,h){rr(x,y,w,h,14,'#d8dcda','#777');fit(IMAGES[asset],x+12,y+7,w-24,h-34);ctx.fillStyle='#f4f2ebee';ctx.fillRect(x,y+h-28,w,28);ctx.fillStyle='#333';ctx.font='900 17px Arial';ctx.textAlign='center';ctx.fillText(label,x+w/2,y+h-9);hit(id,x,y,w,h)}
+function bin(id,label,asset,x,y,w,h){const selected=state.selectedSource===id;rr(x,y,w,h,14,selected?'#e6dfbd':'#d8dcda',selected?'#f1c84b':'#777');if(selected){ctx.lineWidth=5;ctx.strokeStyle='#f1c84b';ctx.strokeRect(x+3,y+3,w-6,h-6)}fit(IMAGES[asset],x+12,y+7,w-24,h-34);ctx.fillStyle='#f4f2ebee';ctx.fillRect(x,y+h-28,w,28);ctx.fillStyle='#333';ctx.font='900 17px Arial';ctx.textAlign='center';ctx.fillText(label,x+w/2,y+h-9);hit(id,x,y,w,h)}
 function bunBin(x,y,w,h){rr(x,y,w,h,14,'#d8dcda','#777');fit(IMAGES.topBun,x+22,y+1,w-44,39);fit(IMAGES.bottomBun,x+25,y+36,w-50,29);ctx.fillStyle='#f4f2ebf2';ctx.fillRect(x,y+h-25,w,25);ctx.fillStyle='#333';ctx.font='900 17px Arial';ctx.textAlign='center';ctx.fillText('BUNS',x+w/2,y+h-8);hit('coldBun',x,y,w,h)}
 
 function grill(i,x,y,w,h){
@@ -62,14 +63,11 @@ function grill(i,x,y,w,h){
   const asset=g.stage==='raw'?d.raw:g.stage==='cooking'?d.cooking:g.stage==='cooked'?d.cooked:d.burned;
   if(g.type==='patty') fit(IMAGES[asset],x+42,y+31,w-84,h-62);
   else fit(IMAGES[asset],x+25,y+24,w-50,h-48);
-  if(g.stage==='cooked'){ctx.strokeStyle='#65d25c';ctx.lineWidth=6;ctx.strokeRect(x+5,y+5,w-10,h-10)}
+  if(g.stage==='cooked'){ctx.strokeStyle=state.selectedCooked===i?'#f1c84b':'#65d25c';ctx.lineWidth=6;ctx.strokeRect(x+5,y+5,w-10,h-10)}
  }
  hit('grill',x,y,w,h,{i});
 }
 
-/* Burger renderer uses exact sprite dimensions instead of contain/fit. This prevents
-   tall source images from shrinking the visible patty, cheese, or bacon horizontally.
-   Each layer is bottom-aligned to the current stack surface; only `rise` advances it. */
 function burger(){
  const cx=1040;
  let surface=318;
@@ -99,7 +97,37 @@ function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.l
 function pick(p){return [...hits].reverse().find(h=>p.x>=h.x&&p.x<=h.x+h.w&&p.y>=h.y&&p.y<=h.y+h.h)}
 function addBun(){const n=needed();if(n==='bottomBun'||n==='topBun'){state.built.push(n);flash(n==='bottomBun'?'Bottom bun placed':'Top bun placed')}else flash(`Next: ${CATALOG[n]?.label||n}`)}
 function addCold(id){if(needed()===id){state.built.push(id);flash(CATALOG[id].label+' added')}else flash(`Next: ${CATALOG[needed()]?.label||needed()}`)}
-canvas.addEventListener('pointerdown',e=>{const h=pick(point(e));if(!h)return;if(h.id==='patty'||h.id==='bacon'){state.selectedSource=h.id;flash(h.id+' selected')}else if(h.id==='grill'){const g=state.grill[h.i];if(!g&&state.selectedSource){state.grill[h.i]={type:state.selectedSource,started:performance.now(),stage:'raw'};state.selectedSource=null}else if(g&&g.stage==='cooked'){state.selectedCooked=h.i;flash('Cooked '+g.type+' selected')}else if(g&&g.stage==='burned')state.grill[h.i]=null;else if(g)flash('Still cooking')}else if(h.id==='coldBun')addBun();else if(h.id==='cheese')addCold('cheese');else if(h.id==='sauce')addCold('sauce');else if(h.id==='assembly'&&state.selectedCooked!==null){const g=state.grill[state.selectedCooked];if(g&&needed()===g.type){state.built.push(g.type);state.grill[state.selectedCooked]=null;state.selectedCooked=null;flash(g.type+' added')}}});
+canvas.addEventListener('pointerdown',e=>{
+ const h=pick(point(e));if(!h)return;
+ if(h.id==='patty'||h.id==='bacon'){
+  state.selectedSource=h.id;
+  state.selectedCooked=null;
+  flash(`${CATALOG[h.id].label} selected — tap either grill`);
+ }else if(h.id==='grill'){
+  const g=state.grill[h.i];
+  if(!g&&state.selectedSource){
+   state.grill[h.i]={type:state.selectedSource,started:performance.now(),stage:'raw'};
+   flash(`${CATALOG[state.selectedSource].label} on burner ${h.i+1}`);
+   state.selectedSource=null;
+  }else if(!g){
+   flash('Select patty or bacon first');
+  }else if(g.stage==='cooked'){
+   state.selectedCooked=h.i;
+   state.selectedSource=null;
+   flash(`Cooked ${g.type} selected`);
+  }else if(g.stage==='burned'){
+   state.grill[h.i]=null;
+   flash('Burned food discarded');
+  }else flash('Still cooking');
+ }else if(h.id==='coldBun')addBun();
+ else if(h.id==='cheese')addCold('cheese');
+ else if(h.id==='sauce')addCold('sauce');
+ else if(h.id==='assembly'&&state.selectedCooked!==null){
+  const g=state.grill[state.selectedCooked];
+  if(g&&needed()===g.type){state.built.push(g.type);state.grill[state.selectedCooked]=null;state.selectedCooked=null;flash(g.type+' added')}
+  else if(g)flash(`Next: ${CATALOG[needed()]?.label||needed()}`);
+ }
+});
 serveBtn.addEventListener('click',()=>{if(!isComplete())return flash(`Finish burger — next: ${CATALOG[needed()]?.label||needed()}`);const tip=1+state.patience/50;state.money+=state.recipe.price+tip;state.score+=Math.round(state.patience);state.served++;flash('Served!');setTimeout(newOrder,650)});
 function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=1600*d;canvas.height=420*d;canvas.style.aspectRatio='1600/420';ctx.setTransform(d,0,0,d,0,0)}
 function tick(n){const dt=Math.min(100,n-state.last);state.last=n;state.patience=Math.max(0,state.patience-dt*.0018);if(state.patience<=0)newOrder();setHUD();render();requestAnimationFrame(tick)}

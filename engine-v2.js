@@ -3,6 +3,7 @@
 const $=s=>document.querySelector(s);
 const canvas=$('#kitchenCanvas'),ctx=canvas.getContext('2d');
 const toast=$('#toast'),serveBtn=$('#serveBtn');
+const sodaStation=$('#sodaStation'),sodaStatus=$('#sodaStatus');
 
 const ASSETS={
  bottomBun:'assets/game/bottom-bun.svg',topBun:'assets/game/top-bun.svg',
@@ -11,7 +12,7 @@ const ASSETS={
  cheese:'assets/cheese.png',sauce:'assets/sauce-drizzle.png',pickles:'assets/game/pickles.svg'
 };
 const IMAGES={};
-function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=12'})))}
+function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=13'})))}
 
 const CATALOG={
  patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:232,h:68,rise:29}},
@@ -37,14 +38,23 @@ const RECIPES={
  doubleCheeseburgerPickles:recipe(6.75,'One double cheeseburger with pickles and burger sauce, please!',['bottomBun','patty','cheese','patty','cheese','pickles','sauce','topBun'])
 };
 const CUSTOMERS=[['Lou','🧑'],['Maya','👩'],['Eddie','🧔'],['Tina','👩‍🦱'],['Sam','👨'],['Nora','👩‍🦰'],['Gus','🧑‍🦱'],['Penny','👨‍🦱'],['Bea','👵'],['Dex','🤠']];
-const state={money:0,score:0,served:0,patience:100,recipe:RECIPES.cheeseburger,built:[],selectedSource:null,selectedCooked:null,grill:[null,null],customerIndex:0,last:performance.now()};
+const state={money:0,score:0,served:0,patience:100,recipe:RECIPES.cheeseburger,built:[],selectedSource:null,selectedCooked:null,grill:[null,null],customerIndex:0,last:performance.now(),wantsSoda:false,sodaReady:false};
 const hits=[];
 
 function flash(m){toast.textContent=m;toast.classList.add('show');clearTimeout(flash.t);flash.t=setTimeout(()=>toast.classList.remove('show'),1000)}
 function needed(){return state.recipe.layers[state.built.length]}
-function isComplete(){return state.built.length===state.recipe.layers.length&&state.built.every((x,i)=>x===state.recipe.layers[i])}
-function setHUD(){$('#money').textContent=state.money.toFixed(2);$('#score').textContent=state.score;$('#served').textContent=state.served;$('#patience').textContent=Math.round(state.patience);$('#patfill').style.width=state.patience+'%';serveBtn.classList.toggle('ready',isComplete())}
-function newOrder(){const ks=Object.keys(RECIPES);state.recipe=RECIPES[ks[Math.floor(Math.random()*ks.length)]];state.built=[];state.grill=[null,null];state.selectedSource=null;state.selectedCooked=null;state.patience=100;const c=CUSTOMERS[state.customerIndex++%CUSTOMERS.length];$('#customerName').textContent=c[0];$('#customerEmoji').textContent=c[1];$('#orderText').textContent=state.recipe.request;setHUD()}
+function burgerComplete(){return state.built.length===state.recipe.layers.length&&state.built.every((x,i)=>x===state.recipe.layers[i])}
+function isComplete(){return burgerComplete()&&(!state.wantsSoda||state.sodaReady)}
+function setHUD(){
+ $('#money').textContent=state.money.toFixed(2);$('#score').textContent=state.score;$('#served').textContent=state.served;$('#patience').textContent=Math.round(state.patience);$('#patfill').style.width=state.patience+'%';serveBtn.classList.toggle('ready',isComplete());
+ sodaStation.classList.toggle('needed',state.wantsSoda&&!state.sodaReady);sodaStation.classList.toggle('ready',state.sodaReady);
+ sodaStatus.textContent=state.sodaReady?'SODA READY':state.wantsSoda?'TAP TO FILL':'NO SODA ORDER';
+}
+function sodaOrderText(base){return base.replace(', please!',' and a soda, please!')}
+function newOrder(){
+ const ks=Object.keys(RECIPES);state.recipe=RECIPES[ks[Math.floor(Math.random()*ks.length)]];state.built=[];state.grill=[null,null];state.selectedSource=null;state.selectedCooked=null;state.patience=100;state.wantsSoda=Math.random()<.45;state.sodaReady=false;
+ const c=CUSTOMERS[state.customerIndex++%CUSTOMERS.length];$('#customerName').textContent=c[0];$('#customerEmoji').textContent=c[1];$('#orderText').textContent=state.wantsSoda?sodaOrderText(state.recipe.request):state.recipe.request;setHUD();
+}
 function fit(img,x,y,w,h){if(!img)return false;const r=Math.min(w/img.width,h/img.height),dw=img.width*r,dh=img.height*r;ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);return true}
 function drawExact(img,x,y,w,h){if(!img)return false;ctx.drawImage(img,x,y,w,h);return true}
 function rr(x,y,w,h,r,f,s){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=f;ctx.fill();if(s){ctx.strokeStyle=s;ctx.lineWidth=3;ctx.stroke()}}
@@ -60,7 +70,8 @@ function pick(p){return [...hits].reverse().find(h=>p.x>=h.x&&p.x<=h.x+h.w&&p.y>
 function addBun(){const n=needed();if(n==='bottomBun'||n==='topBun'){state.built.push(n);flash(n==='bottomBun'?'Bottom bun placed':'Top bun placed')}else flash(`Next: ${CATALOG[n]?.label||n}`)}
 function addCold(id){if(needed()===id){state.built.push(id);flash(CATALOG[id].label+' added')}else flash(`Next: ${CATALOG[needed()]?.label||needed()}`)}
 canvas.addEventListener('pointerdown',e=>{const h=pick(point(e));if(!h)return;if(h.id==='patty'||h.id==='bacon'){state.selectedSource=h.id;state.selectedCooked=null;flash(`${CATALOG[h.id].label} selected — tap either grill`)}else if(h.id==='grill'){const g=state.grill[h.i];if(!g&&state.selectedSource){state.grill[h.i]={type:state.selectedSource,started:performance.now(),stage:'raw'};flash(`${CATALOG[state.selectedSource].label} on burner ${h.i+1}`);state.selectedSource=null}else if(!g)flash('Select patty or bacon first');else if(g.stage==='cooked'){state.selectedCooked=h.i;state.selectedSource=null;flash(`Cooked ${g.type} selected`)}else if(g.stage==='burned'){state.grill[h.i]=null;flash('Burned food discarded')}else flash('Still cooking')}else if(h.id==='coldBun')addBun();else if(h.id==='cheese')addCold('cheese');else if(h.id==='pickles')addCold('pickles');else if(h.id==='sauce')addCold('sauce');else if(h.id==='assembly'&&state.selectedCooked!==null){const g=state.grill[state.selectedCooked];if(g&&needed()===g.type){state.built.push(g.type);state.grill[state.selectedCooked]=null;state.selectedCooked=null;flash(g.type+' added')}else if(g)flash(`Next: ${CATALOG[needed()]?.label||needed()}`)}});
-serveBtn.addEventListener('click',()=>{if(!isComplete())return flash(`Finish burger — next: ${CATALOG[needed()]?.label||needed()}`);const tip=1+state.patience/50;state.money+=state.recipe.price+tip;state.score+=Math.round(state.patience);state.served++;flash('Served!');setTimeout(newOrder,650)});
+sodaStation.addEventListener('click',()=>{if(!state.wantsSoda){flash('No soda on this order');return}if(state.sodaReady){flash('Soda is already ready');return}state.sodaReady=true;flash('Soda filled!');setHUD()});
+serveBtn.addEventListener('click',()=>{if(!burgerComplete())return flash(`Finish burger — next: ${CATALOG[needed()]?.label||needed()}`);if(state.wantsSoda&&!state.sodaReady)return flash('Don’t forget the soda!');const tip=1+state.patience/50;state.money+=state.recipe.price+(state.wantsSoda?1.50:0)+tip;state.score+=Math.round(state.patience);state.served++;flash('Served!');setTimeout(newOrder,650)});
 function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=1600*d;canvas.height=420*d;canvas.style.aspectRatio='1600/420';ctx.setTransform(d,0,0,d,0,0)}
 function tick(n){const dt=Math.min(100,n-state.last);state.last=n;state.patience=Math.max(0,state.patience-dt*.0018);if(state.patience<=0)newOrder();setHUD();render();requestAnimationFrame(tick)}
 window.addEventListener('resize',resize);resize();loadImages().then(()=>{newOrder();requestAnimationFrame(tick)});

@@ -18,17 +18,17 @@ const ASSETS={
  sauce:'assets/sauce-drizzle.png'
 };
 const IMAGES={};
-function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=8'})))}
+function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=9'})))}
 
-/* Every ingredient has an explicit visual box and a small rise value.
-   The visual box controls appearance; rise controls how much height it adds to the burger. */
+/* Assembly dimensions are exact sprite sizes. `rise` is the physical thickness that
+   ingredient adds to the stack, independent from the artwork's drawing height. */
 const CATALOG={
- patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:224,h:64,rise:27}},
- bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:202,h:45,rise:15}},
- cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:226,h:50,rise:14}},
- sauce:{id:'sauce',label:'SAUCE',asset:'sauce',visual:{w:175,h:28,rise:7}},
- topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:215,h:82,rise:0}},
- bottomBun:{id:'bottomBun',label:'BUNS',asset:'bottomBun',visual:{w:215,h:64,rise:28}}
+ patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:232,h:68,rise:29}},
+ bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:230,h:36,rise:12}},
+ cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:238,h:48,rise:12}},
+ sauce:{id:'sauce',label:'SAUCE',asset:'sauce',visual:{w:205,h:22,rise:5}},
+ topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:228,h:86,rise:0}},
+ bottomBun:{id:'bottomBun',label:'BUNS',asset:'bottomBun',visual:{w:228,h:66,rise:31}}
 };
 const RECIPES={
  hamburger:{price:4,request:'One hamburger with burger sauce, please!',layers:['bottomBun','patty','sauce','topBun']},
@@ -45,6 +45,7 @@ function isComplete(){return state.built.length===state.recipe.layers.length&&st
 function setHUD(){$('#money').textContent=state.money.toFixed(2);$('#score').textContent=state.score;$('#served').textContent=state.served;$('#patience').textContent=Math.round(state.patience);$('#patfill').style.width=state.patience+'%';serveBtn.classList.toggle('ready',isComplete())}
 function newOrder(){const ks=Object.keys(RECIPES);state.recipe=RECIPES[ks[Math.floor(Math.random()*ks.length)]];state.built=[];state.grill=[null,null];state.selectedSource=null;state.selectedCooked=null;state.patience=100;const c=CUSTOMERS[state.customerIndex++%CUSTOMERS.length];$('#customerName').textContent=c[0];$('#customerEmoji').textContent=c[1];$('#orderText').textContent=state.recipe.request;setHUD()}
 function fit(img,x,y,w,h){if(!img)return false;const r=Math.min(w/img.width,h/img.height),dw=img.width*r,dh=img.height*r;ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);return true}
+function drawExact(img,x,y,w,h){if(!img)return false;ctx.drawImage(img,x,y,w,h);return true}
 function rr(x,y,w,h,r,f,s){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=f;ctx.fill();if(s){ctx.strokeStyle=s;ctx.lineWidth=3;ctx.stroke()}}
 function text(t,x,y,z=22,a='center'){ctx.fillStyle='#eee';ctx.font=`900 ${z}px Arial`;ctx.textAlign=a;ctx.textBaseline='middle';ctx.fillText(t,x,y)}
 function hit(id,x,y,w,h,d={}){hits.push({id,x,y,w,h,...d})}
@@ -66,18 +67,19 @@ function grill(i,x,y,w,h){
  hit('grill',x,y,w,h,{i});
 }
 
-/* Bottom-aligned controlled stack. All layers share the same center line, and rise
-   is intentionally smaller than image height so ingredients overlap like a real burger. */
+/* Burger renderer uses exact sprite dimensions instead of contain/fit. This prevents
+   tall source images from shrinking the visible patty, cheese, or bacon horizontally.
+   Each layer is bottom-aligned to the current stack surface; only `rise` advances it. */
 function burger(){
  const cx=1040;
- let base=318;
+ let surface=318;
  for(const id of state.built){
   const d=CATALOG[id],v=d.visual;
   let asset=d.asset;
   if(id==='patty')asset='pattyCooked';
   if(id==='bacon')asset='baconCooked';
-  fit(IMAGES[asset],cx-v.w/2,base-v.h,v.w,v.h);
-  base-=v.rise;
+  drawExact(IMAGES[asset],cx-v.w/2,surface-v.h,v.w,v.h);
+  surface-=v.rise;
  }
  hit('assembly',820,100,440,245);
 }

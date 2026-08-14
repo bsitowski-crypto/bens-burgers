@@ -18,14 +18,14 @@ const ASSETS={
  sauce:'assets/sauce-drizzle.png'
 };
 const IMAGES={};
-function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=7'})))}
+function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=8'})))}
 
 /* Every ingredient has an explicit visual box and a small rise value.
    The visual box controls appearance; rise controls how much height it adds to the burger. */
 const CATALOG={
- patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:202,h:58,rise:25}},
+ patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:224,h:64,rise:27}},
  bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:202,h:45,rise:15}},
- cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:205,h:43,rise:12}},
+ cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:226,h:50,rise:14}},
  sauce:{id:'sauce',label:'SAUCE',asset:'sauce',visual:{w:175,h:28,rise:7}},
  topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:215,h:82,rise:0}},
  bottomBun:{id:'bottomBun',label:'BUNS',asset:'bottomBun',visual:{w:215,h:64,rise:28}}

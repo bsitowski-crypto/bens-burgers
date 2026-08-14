@@ -18,16 +18,17 @@ const ASSETS={
  sauce:'assets/sauce-drizzle.png'
 };
 const IMAGES={};
-function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=6'})))}
+function loadImages(){return Promise.all(Object.entries(ASSETS).map(([k,src])=>new Promise(res=>{const im=new Image();im.onload=()=>{IMAGES[k]=im;res()};im.onerror=()=>{IMAGES[k]=null;res()};im.src=src+'?v=7'})))}
 
-/* visual dimensions and rise are independent: rise controls how tightly layers stack */
+/* Every ingredient has an explicit visual box and a small rise value.
+   The visual box controls appearance; rise controls how much height it adds to the burger. */
 const CATALOG={
- patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:178,h:50,rise:25}},
- bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:178,h:38,rise:16}},
- cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:184,h:38,rise:14}},
- sauce:{id:'sauce',label:'SAUCE',asset:'sauce',visual:{w:160,h:25,rise:9}},
- topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:194,h:78,rise:0}},
- bottomBun:{id:'bottomBun',label:'BUNS',asset:'bottomBun',visual:{w:194,h:58,rise:28}}
+ patty:{id:'patty',label:'PATTY',raw:'pattyRaw',cooking:'pattyCooking',cooked:'pattyCooked',burned:'pattyBurned',cookMs:5200,burnMs:6500,visual:{w:202,h:58,rise:25}},
+ bacon:{id:'bacon',label:'BACON',raw:'baconRaw',cooking:'baconCooking',cooked:'baconCooked',burned:'baconCooked',cookMs:3900,burnMs:5200,visual:{w:202,h:45,rise:15}},
+ cheese:{id:'cheese',label:'CHEESE',asset:'cheese',visual:{w:205,h:43,rise:12}},
+ sauce:{id:'sauce',label:'SAUCE',asset:'sauce',visual:{w:175,h:28,rise:7}},
+ topBun:{id:'topBun',label:'BUNS',asset:'topBun',visual:{w:215,h:82,rise:0}},
+ bottomBun:{id:'bottomBun',label:'BUNS',asset:'bottomBun',visual:{w:215,h:64,rise:28}}
 };
 const RECIPES={
  hamburger:{price:4,request:'One hamburger with burger sauce, please!',layers:['bottomBun','patty','sauce','topBun']},
@@ -58,27 +59,25 @@ function grill(i,x,y,w,h){
   const d=CATALOG[g.type],e=performance.now()-g.started;
   g.stage=e>d.cookMs+d.burnMs?'burned':e>d.cookMs?'cooked':e>d.cookMs*.35?'cooking':'raw';
   const asset=g.stage==='raw'?d.raw:g.stage==='cooking'?d.cooking:g.stage==='cooked'?d.cooked:d.burned;
-  fit(IMAGES[asset],x+25,y+20,w-50,h-40);
+  if(g.type==='patty') fit(IMAGES[asset],x+42,y+31,w-84,h-62);
+  else fit(IMAGES[asset],x+25,y+24,w-50,h-48);
   if(g.stage==='cooked'){ctx.strokeStyle='#65d25c';ctx.lineWidth=6;ctx.strokeRect(x+5,y+5,w-10,h-10)}
  }
  hit('grill',x,y,w,h,{i});
 }
 
-/* controlled overlap stack: every layer shares one centerline and rises by a small amount */
+/* Bottom-aligned controlled stack. All layers share the same center line, and rise
+   is intentionally smaller than image height so ingredients overlap like a real burger. */
 function burger(){
  const cx=1040;
- let cy=292;
+ let base=318;
  for(const id of state.built){
   const d=CATALOG[id],v=d.visual;
   let asset=d.asset;
   if(id==='patty')asset='pattyCooked';
   if(id==='bacon')asset='baconCooked';
-  if(id==='topBun'){
-   fit(IMAGES[asset],cx-v.w/2,cy-v.h+18,v.w,v.h);
-  }else{
-   fit(IMAGES[asset],cx-v.w/2,cy-v.h/2,v.w,v.h);
-   cy-=v.rise;
-  }
+  fit(IMAGES[asset],cx-v.w/2,base-v.h,v.w,v.h);
+  base-=v.rise;
  }
  hit('assembly',820,100,440,245);
 }

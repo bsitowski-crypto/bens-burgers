@@ -1,1 +1,48 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1"><meta name="theme-color" content="#17100c"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Ben's Burgers"><title>Ben's Burgers</title><link rel="stylesheet" href="app-v23.css?v=25"><link rel="stylesheet" href="v24-mobile.css?v=25"><link rel="stylesheet" href="v25-polish.css?v=25"></head><body><main class="game"><header class="hud"><div class="logo">Ben's<small>BURGERS</small></div><div class="hudBox"><span>SCORE</span><strong id="score">0</strong></div><div class="hudBox shiftBox"><div class="shiftTop"><span>SHIFT <b id="served">0/10</b></span><span>⭐ <b id="perfect">0/10</b></span></div><div class="shiftTrack"><div id="shiftFill" class="shiftFill"></div></div></div><div class="hudBox comboBox">🔥 COMBO <strong id="combo">x1</strong></div><div class="hudBox timeBox">⏱ <strong id="time">94</strong></div></header><section id="customers" class="customers"></section><section class="kitchen"><div class="station"><div class="stationTitle"><span>🔥 GRIDDLE</span><span>Cook until green</span></div><div class="grillGrid"><button class="grillSlot"><i class="foodSprite"></i><span class="slotBar"><i></i></span></button><button class="grillSlot"><i class="foodSprite"></i><span class="slotBar"><i></i></span></button><button class="grillSlot"><i class="foodSprite"></i><span class="slotBar"><i></i></span></button><button class="grillSlot"><i class="foodSprite"></i><span class="slotBar"><i></i></span></button><button class="grillSlot"><i class="foodSprite"></i><span class="slotBar"><i></i></span></button><button class="grillSlot"><i class="foodSprite"></i><span class="slotBar"><i></i></span></button></div><div class="grillLegend"><span><i class="dot rawDot"></i>RAW</span><span><i class="dot cookDot"></i>COOKING</span><span><i class="dot readyDot"></i>READY</span></div></div><div class="station"><div class="stationTitle"><span>🥬 PREP LINE</span><span>Tap ingredients to build</span></div><div class="prepWrap"><button class="ingredient" data-item="buns"><i class="art" style="background-image:url('assets/buns-stock.png')"></i><span class="label">BUNS</span></button><button class="ingredient" data-item="lettuce"><i class="cssFood"><i class="lettuce"></i></i><span class="label">LETTUCE</span></button><button class="ingredient" data-item="tomato"><i class="cssFood tomato"><i></i><i></i></i><span class="label">TOMATO</span></button><button class="ingredient" data-item="onion"><i class="cssFood onion"><i></i><i></i></i><span class="label">ONIONS</span></button><button class="ingredient" data-item="pickles"><i class="cssFood pickleCss"><i></i><i></i><i></i></i><span class="label">PICKLES</span></button><button class="ingredient" data-item="cheese"><i class="art" style="background-image:url('assets/cheese-stock.png')"></i><span class="label">CHEESE</span></button><button class="ingredient" data-item="bacon"><i class="art" style="background-image:url('assets/bacon-raw.png')"></i><span class="label">RAW BACON</span></button><button class="ingredient" data-item="patties"><i class="art" style="background-image:url('assets/raw-patty.png')"></i><span class="label">RAW PATTIES</span></button><button class="ingredient" data-item="sauce"><i class="cssFood"></i><span class="label">SAUCE</span></button><button id="drinkBtn" class="ingredient" data-item="drink"><i class="cssFood"></i><span class="label">DRINK</span></button><button id="friesBtn" class="ingredient" data-item="fries"><i class="cssFood"></i><span class="label">FRIES</span></button></div></div><div class="station assembly"><div class="stationTitle"><span>🍔 BUILD ORDER</span><span id="money">$0.00</span></div><div class="board"><div class="checker"></div><div id="burgerStack" class="burgerStack"></div></div><div class="assemblyStatus"><div id="hint" class="hint">Start with the bottom bun.</div></div></div></section><footer class="footer"><button class="footerBtn" aria-label="Pause">Ⅱ</button><div class="perfectBox"><span class="star">★</span><span>PERFECT ORDERS<br><b id="perfectFooter">Keep it clean</b></span></div><div class="tipBox">💡 Build in order, cook meats to green, then serve.</div><button id="serveBtn" class="serve" disabled>SERVE →</button></footer></main><div id="toast" class="toast"></div><script src="engine-v23.js?v=25"></script><script src="v25-polish.js?v=25"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#242829">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Ben’s Burgers · 26</title>
+<link rel="stylesheet" href="v26.css?v=26.0">
+<script src="v26-art.js?v=26.0" defer></script>
+<script src="v26-game.js?v=26.0" defer></script>
+</head>
+<body>
+<main id="app" class="app">
+<header class="hud">
+ <div class="brand">Ben’s <span>BURGERS</span><small>v26</small></div>
+ <div class="stat"><span>SHIFT</span><b id="shift">1 · 0/5</b></div>
+ <div class="stat"><span>SCORE</span><b id="score">0</b></div>
+ <div class="stat"><span>EARNED</span><b id="money">$0.00</b></div>
+ <div class="store"><b id="storeName">CORNER STAND</b><span id="combo">GRILL · STACK · SERVE</span></div>
+ <button type="button" id="pauseBtn" data-action="pause" aria-label="Pause game">Ⅱ</button>
+ <button type="button" data-action="help" aria-label="How to play">?</button>
+</header>
+<section class="service" aria-label="Customer and order">
+ <div class="customer-stage">
+  <div id="customerArt" class="customer-art" role="img" aria-label="Customer at the counter"></div>
+  <div class="name-tag"><span class="online-dot"></span><b id="personName">Lou</b></div>
+ </div>
+ <article class="ticket">
+  <div class="ticket-top"><span id="orderNumber">ORDER 01</span><div id="orderTabs" hidden></div><span class="patience-label">PATIENCE <b id="patienceLabel">100%</b></span></div>
+  <div class="ticket-main"><div class="meal-picture"><div id="orderBurger"></div><div id="orderSides"></div></div><div class="ticket-copy"><h1 id="recipeName">Cheeseburger</h1><div id="recipeList" class="recipe-list"></div><p id="orderExtras"></p></div></div>
+  <div class="patience-track"><div id="patienceFill"></div></div>
+ </article>
+</section>
+<section class="kitchen" aria-label="Kitchen work surfaces">
+ <section class="station griddle-station"><h2><span>01</span> GRIDDLE</h2><div id="grills" class="grills"></div><div class="station-note">Raw → Cooking → Ready</div></section>
+ <section class="station prep-station"><h2><span>02</span> INGREDIENTS</h2><div id="ingredients" class="ingredients"></div></section>
+ <section class="station assembly-station"><h2><span>03</span> YOUR TRAY</h2><div class="board"><div class="paper"></div><div id="builtBurger" class="built-burger"></div><div id="readySides" class="ready-sides"></div></div><div class="build-meta"><span id="buildLabel">Start with a bun base</span><button type="button" data-action="undo" aria-label="Undo last ingredient">UNDO</button></div></section>
+ <section class="station sides-station"><h2><span>04</span> SIDES</h2><div class="side-stations"><button type="button" id="friesStation" data-action="fries"><span id="friesMachine" class="machine-art"></span><span id="friesLabel" class="machine-label">START FRYER</span><span class="station-progress"></span></button><button type="button" id="drinkStation" data-action="drink"><span id="drinkMachine" class="machine-art"></span><span id="drinkLabel" class="machine-label">FILL COLA</span><span class="station-progress"></span></button></div></section>
+</section>
+<footer class="footer"><div class="instructions"><b id="hint">Start with the bottom bun.</b><span id="status" role="status" aria-live="polite">Welcome!</span></div><button type="button" id="serveBtn" data-action="serve" aria-disabled="true">SERVE LOU →</button></footer>
+</main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v26</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
+</div>
+<noscript>This game needs JavaScript enabled.</noscript>
+</body>
+</html>

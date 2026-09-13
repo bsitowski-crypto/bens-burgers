@@ -5,30 +5,33 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#242829">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Ben’s Burgers · 26</title>
+<title>Ben’s Burgers · 27</title>
 <link rel="stylesheet" href="v26.css?v=26.0">
+<link rel="stylesheet" href="v27.css?v=27.0">
 <script src="v26-art.js?v=26.0" defer></script>
-<script src="v26-game.js?v=26.0" defer></script>
+<script src="v27-model.js?v=27.0" defer></script>
+<script src="v27-ui.js?v=27.0" defer></script>
 </head>
 <body>
 <main id="app" class="app">
 <header class="hud">
- <div class="brand">Ben’s <span>BURGERS</span><small>v26</small></div>
+ <div class="brand">Ben’s <span>BURGERS</span><small>v27</small></div>
  <div class="stat"><span>SHIFT</span><b id="shift">1 · 0/5</b></div>
- <div class="stat"><span>SCORE</span><b id="score">0</b></div>
- <div class="stat"><span>EARNED</span><b id="money">$0.00</b></div>
+ <div class="stat score-stat"><span>SCORE</span><b id="score">0</b></div>
+ <div class="stat"><span>CASH</span><b id="money">$0.00</b></div>
  <div class="store"><b id="storeName">CORNER STAND</b><span id="combo">GRILL · STACK · SERVE</span></div>
+ <button type="button" id="shopBtn" data-action="shop">SHOP</button>
  <button type="button" id="pauseBtn" data-action="pause" aria-label="Pause game">Ⅱ</button>
  <button type="button" data-action="help" aria-label="How to play">?</button>
 </header>
-<section class="service" aria-label="Customer and order">
- <div class="customer-stage">
+<section id="service" class="service" aria-label="Customer and order">
+ <div id="customerStage" class="customer-stage"><div class="customer-walker">
   <div id="customerArt" class="customer-art" role="img" aria-label="Customer at the counter"></div>
-  <div class="name-tag"><span class="online-dot"></span><b id="personName">Lou</b></div>
+  </div><div class="name-tag"><span class="online-dot"></span><b id="personName">Lou</b></div>
  </div>
  <article class="ticket">
   <div class="ticket-top"><span id="orderNumber">ORDER 01</span><div id="orderTabs" hidden></div><span class="patience-label">PATIENCE <b id="patienceLabel">100%</b></span></div>
-  <div class="ticket-main"><div class="meal-picture"><div id="orderBurger"></div><div id="orderSides"></div></div><div class="ticket-copy"><h1 id="recipeName">Cheeseburger</h1><div id="recipeList" class="recipe-list"></div><p id="orderExtras"></p></div></div>
+  <div class="ticket-main"><div class="meal-picture"><div id="orderBurger"></div><div id="orderSides"></div></div><div class="ticket-copy"><h1 id="recipeName">Hamburger</h1><div id="recipeList" class="recipe-list"></div><p id="orderExtras"></p></div></div>
   <div class="patience-track"><div id="patienceFill"></div></div>
  </article>
 </section>
@@ -41,7 +44,18 @@
 <footer class="footer"><div class="instructions"><b id="hint">Start with the bottom bun.</b><span id="status" role="status" aria-live="polite">Welcome!</span></div><button type="button" id="serveBtn" data-action="serve" aria-disabled="true">SERVE LOU →</button></footer>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
- <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v26</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
+ <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v27</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
+</div>
+<div id="shopModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shopTitle" hidden>
+ <section class="modal-card shop-card">
+  <header class="shop-header"><div><span class="eyebrow">GROW YOUR LITTLE DINER</span><h2 id="shopTitle">Upgrade shop</h2></div><button type="button" id="shopClose" aria-label="Close shop">BACK TO GAME ×</button></header>
+  <div class="shop-wallet"><span>AVAILABLE CASH <b id="shopCash">$0.00</b></span><span>Earned in the game. No real money.</span></div>
+  <p class="shop-pause">Cooking and customer patience are paused while you shop.</p>
+  <div id="shopFilters" class="shop-filters" aria-label="Shop categories"></div>
+  <p id="shopStatus" class="shop-feedback" role="status" aria-live="polite"></p>
+  <div id="shopItems" class="shop-items"></div>
+  <p class="shop-footnote">Purchases are permanent on this browser. Buns and patties are always free to use. New ingredients appear on future orders; existing tickets do not change. Clear browser data to start over.</p>
+ </section>
 </div>
 <noscript>This game needs JavaScript enabled.</noscript>
 </body>

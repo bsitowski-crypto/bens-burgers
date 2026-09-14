@@ -95,7 +95,8 @@ function motion(stage,model,dt=0){
  let clock=paying?2200-model.phaseLeft:0;
  // Prepare a separate forearm layer so the paying hand reaches OVER the countertop.
  const front=stage.querySelector('.customer-foreground');
- if(front.dataset.person!==String(o.person)){
+ if(front.dataset.person!==String(o.person)||front.__rig!==rig){
+  front.__rig=rig;
   front.dataset.person=String(o.person);const arm=rig.querySelector('[data-joint="rightArm"]').cloneNode(true);
   front.innerHTML='<svg viewBox="0 0 240 460" class="customer-rig" aria-hidden="true"><g class="front-body"></g><g class="held-cash"><rect x="-35" y="-13" width="70" height="30" rx="2" fill="#cbdcaa" stroke="#467054"/><text x="0" y="5" text-anchor="middle" font-size="13" fill="#4a6e45">$</text></g></svg>';
   front.querySelector('.front-body').appendChild(arm);

@@ -1,1 +1,0 @@
-v32 native asset verification pass 2

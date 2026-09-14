@@ -1,0 +1,2 @@
+/* Preserve progression and payments; new stands meet Eddie first. */
+(function(root){'use strict';const base=typeof module!=='undefined'&&module.exports?require('./v31-model.js'):root.BB27;class Kitchen extends base.Kitchen{makeOrder(){const o=super.makeOrder();if(o.id===1)o.person=2;return o;}}const api={...base,Kitchen};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.BB27=api;})(globalThis);

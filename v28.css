@@ -1,0 +1,61 @@
+/* v28: articulated figures, clear fillings, and real foreground counter occlusion. */
+.brand>small{display:inline!important;position:static;font:700 8px system-ui;margin-left:8px;vertical-align:middle;color:#f1ce82;text-shadow:none}
+.customer-stage{isolation:isolate;overflow:hidden;position:relative}
+.customer-stage:after{content:'';position:absolute;left:0;right:0;bottom:0;height:7px;background:linear-gradient(#f9e4c0,#b9b2a3 40%,#596065 48%,#e1d3b6);z-index:5;box-shadow:0 -1px 4px #27201955;pointer-events:none}
+.customer-walker{position:absolute;left:50%;transform-origin:50% 100%;will-change:transform;z-index:2;transition:none!important;aspect-ratio:240/460}
+.customer-art,.customer-art[data-person]{inset:0!important;background:none!important;clip-path:none!important;animation:none!important;aspect-ratio:240/460!important;width:100%!important;height:100%!important;filter:drop-shadow(0 2px 1px #36231655)}
+.customer-rig{width:100%;height:100%;overflow:visible}
+.customer-rig image{image-rendering:auto}
+.name-tag{z-index:7;bottom:3px;padding:3px 11px}
+.diner-door{position:absolute;left:2%;top:5%;bottom:9%;width:44%;max-width:110px;border:4px solid #624830;background:linear-gradient(110deg,#b5d4d433,#88babb22),repeating-linear-gradient(0deg,#2f453140 0 15%,#8ea67866 16% 18%);box-shadow:inset 0 0 0 2px #b6976d,3px 0 5px #241a2140;border-radius:3px;z-index:0;overflow:hidden}
+.diner-door:before{content:'';position:absolute;left:45%;top:0;bottom:0;width:3px;background:#b18b60}
+.diner-door:after{content:'';position:absolute;top:58%;right:7%;height:15%;width:3px;background:#d5cfb8;box-shadow:1px 1px #29231c}
+.diner-door>span{position:absolute;left:9%;right:9%;top:27%;padding:5px 1px;background:#497769;color:#fff6dd;font:800 clamp(6px,.7vw,10px) system-ui;text-align:center;letter-spacing:.12em;border:1px solid #bcd0b3;transform:rotate(-3deg)}
+.diner-floor{position:absolute;bottom:0;left:0;right:0;height:23%;background:repeating-linear-gradient(90deg,#a0815924 0 20%,#49382055 20% 21%),linear-gradient(#8f7953,#574332);transform-origin:bottom center;box-shadow:inset 0 7px 10px #3b2e2155;z-index:0}
+.service{background:radial-gradient(ellipse at 20% 0,#f5d39442,transparent 48%),repeating-linear-gradient(90deg,#0000 0 20%,#38241a1c 20% 20.5%),linear-gradient(#846147,#6a4b36 74%,#9a734b 75%);border-bottom-width:10px}
+.service:after{height:13px;bottom:-10px;background:linear-gradient(#ffeed0 0 12%,#d4c4ad 14% 29%,#9e9c90 30% 55%,#5e696b 56% 64%,#cfcdc3 65% 72%,#6c7779 75% 100%);box-shadow:0 4px 5px #141c2066}
+.service.arriving .ticket{opacity:0;transform:translateX(8px)}
+.recipe-chip{display:inline-flex;align-items:center;gap:3px;min-height:19px;white-space:nowrap}
+.chip-food{display:inline-block;width:23px;height:16px;flex:none}
+.chip-food svg{width:100%;height:100%}
+.meal-picture>#orderBurger{width:65%;height:100%;min-width:0}
+#orderSides{max-width:35%;height:100%;align-items:flex-end;padding-bottom:6%}
+.side-icon{height:70%;width:50%}
+.recipe-list{gap:2px 3px}
+.kitchen{padding:6px 4px 10px;background:repeating-linear-gradient(2deg,#ffffff0a 0 1px,transparent 1px 4px),linear-gradient(145deg,#e2daca,#89928e 15%,#cad1c8 44%,#818c8a 72%,#b9b8a8);border-bottom:5px solid #525e61;box-shadow:inset 0 2px #ffffdf,0 4px #1b2b34,0 8px 9px #0005}
+.station{border-color:#edf0d9;box-shadow:inset 0 1px #fff,0 3px 0 #263943}
+.ingredients{background:linear-gradient(145deg,#bbc3b7,#899a99 22%,#5a6d73)}
+.ingredients>button:not(.shop-teaser){background:linear-gradient(135deg,#cdd3c5,#b1bbae 8%,#505d55 9%,#36443b 65%,#6a796d);border-width:2px;box-shadow:inset 0 4px 6px #0b181dcc,inset 0 -1px #f8f8d4,0 2px #344346}
+.food-art{filter:drop-shadow(1px 4px 2px #17242180)}
+.board{background:repeating-linear-gradient(2deg,#c3894533 0 2px,transparent 2px 8px),linear-gradient(115deg,#e8c28a,#c88c46);border-bottom-width:6px;border-right-width:3px;border-radius:9px;box-shadow:inset 0 2px #ffe0a6,inset -3px -1px #a9723c,0 5px 0 #634228,0 8px 9px #13212866}
+.paper{inset:48% 5% 4%;box-shadow:0 3px 3px #63422d55}
+.built-burger{inset:0 3% 3%;filter:drop-shadow(1px 4px 2px #5b311950)}
+.ingredients .tray-label{white-space:normal;line-height:1.1;min-height:18px;display:flex;justify-content:center;align-items:center;padding:2px}
+.footer{box-shadow:0 4px 0 #182a31;background:linear-gradient(#35464d,#26353e)}
+@media (orientation:portrait){
+ .service{grid-template-columns:minmax(0,.39fr) minmax(0,.61fr)}
+ .app{grid-template-rows:50px 214px 470px auto}
+ .ticket-main{grid-template-rows:minmax(64px,85px) minmax(0,1fr)}
+ .recipe-chip{font-size:8px;padding:1px 3px;min-height:19px}
+ .chip-food{width:20px;height:15px}
+ .ticket-copy>h1{font-size:13px;margin-bottom:4px}
+ .meal-picture{max-width:155px;width:100%;margin:auto;height:100%}
+ .ticket-top{font-size:7px;gap:3px;letter-spacing:0}
+ .ticket-top #orderTabs{bottom:1px;top:auto;position:relative;flex-wrap:wrap}
+ .ticket-top:has(#orderTabs:not([hidden])){flex-wrap:wrap}
+ .customer-stage .name-tag{font-size:10px}
+ .diner-door{width:48%;border-width:3px}
+ .brand>small{font-size:7px;margin-left:3px}
+}
+@media (max-height:380px) and (orientation:landscape){
+ .chip-food{width:16px;height:11px}.recipe-chip{min-height:13px;font-size:7px;padding:1px 2px;gap:2px}
+ .ticket-copy>h1{margin-bottom:2px}.kitchen{padding:4px 3px 5px;border-bottom-width:2px}
+ .name-tag{font-size:8px;padding:2px 7px}.ingredients .tray-label{min-height:14px;font-size:7px}
+}
+@media (prefers-reduced-motion:reduce){.customer-walker{will-change:auto}.service.arriving .ticket{opacity:1;transform:none}.name-tag{opacity:1!important}}
+/* SVG overflow is inherited from the old food styling; head cells must not bleed. */
+.customer-rig .head-frame{overflow:hidden!important}
+@media(orientation:portrait){.app{grid-template-rows:50px 214px minmax(470px,1fr) 72px}.kitchen{grid-template-rows:minmax(210px,.46fr) minmax(240px,.54fr)}.footer{height:72px;min-height:72px;align-self:end}#serveBtn{max-height:54px;align-self:center}.instructions{align-self:center}}
+/* A version badge must not create a third logo line inside the compact header. */
+.brand{line-height:.9;align-self:center}.brand>small{position:absolute;left:88px;bottom:0;right:auto;margin:0;font-size:7px;line-height:1}
+@media(max-height:380px) and (orientation:landscape){.brand{font-size:19px;line-height:.85}.brand>span{font-size:6px;line-height:1.1;margin-top:2px}.brand>small{left:67px;bottom:1px}}

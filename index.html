@@ -5,17 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#242829">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Ben’s Burgers · 27</title>
+<title>Ben’s Burgers · 28</title>
 <link rel="stylesheet" href="v26.css?v=26.0">
 <link rel="stylesheet" href="v27.css?v=27.0">
-<script src="v26-art.js?v=26.0" defer></script>
+<link rel="stylesheet" href="v28.css?v=28.0">
+<script src="v28-art.js?v=28.0" defer></script>
+<script src="v28-customers.js?v=28.0" defer></script>
 <script src="v27-model.js?v=27.0" defer></script>
-<script src="v27-ui.js?v=27.0" defer></script>
+<script src="v28-model.js?v=28.0" defer></script>
+<script src="v28-ui.js?v=28.0" defer></script>
 </head>
 <body>
 <main id="app" class="app">
 <header class="hud">
- <div class="brand">Ben’s <span>BURGERS</span><small>v27</small></div>
+ <div class="brand">Ben’s <span>BURGERS</span><small>v28</small></div>
  <div class="stat"><span>SHIFT</span><b id="shift">1 · 0/5</b></div>
  <div class="stat score-stat"><span>SCORE</span><b id="score">0</b></div>
  <div class="stat"><span>CASH</span><b id="money">$0.00</b></div>
@@ -25,7 +28,7 @@
  <button type="button" data-action="help" aria-label="How to play">?</button>
 </header>
 <section id="service" class="service" aria-label="Customer and order">
- <div id="customerStage" class="customer-stage"><div class="customer-walker">
+ <div id="customerStage" class="customer-stage"><div class="diner-door" aria-hidden="true"><i></i><span>OPEN</span></div><div class="diner-floor" aria-hidden="true"></div><div class="customer-walker">
   <div id="customerArt" class="customer-art" role="img" aria-label="Customer at the counter"></div>
   </div><div class="name-tag"><span class="online-dot"></span><b id="personName">Lou</b></div>
  </div>
@@ -44,7 +47,7 @@
 <footer class="footer"><div class="instructions"><b id="hint">Start with the bottom bun.</b><span id="status" role="status" aria-live="polite">Welcome!</span></div><button type="button" id="serveBtn" data-action="serve" aria-disabled="true">SERVE LOU →</button></footer>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
- <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v27</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
+ <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v28</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
 </div>
 <div id="shopModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shopTitle" hidden>
  <section class="modal-card shop-card">

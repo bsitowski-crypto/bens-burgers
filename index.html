@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#242829">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Ben’s Burgers · 28</title>
+<title>Ben’s Burgers · 29</title>
 <link rel="stylesheet" href="v26.css?v=26.0">
 <link rel="stylesheet" href="v27.css?v=27.0">
 <link rel="stylesheet" href="v28.css?v=28.0">
@@ -13,17 +13,20 @@
 <script src="v28-customers.js?v=28.0" defer></script>
 <script src="v27-model.js?v=27.0" defer></script>
 <script src="v28-model.js?v=28.0" defer></script>
-<script src="v28-ui.js?v=28.0" defer></script>
+<link rel="stylesheet" href="sound-v29.css?v=29.0">
+<script src="sound-v29.js?v=29.0" defer></script>
+<script src="v29-ui.js?v=29.0" defer></script>
 </head>
 <body>
 <main id="app" class="app">
 <header class="hud">
- <div class="brand">Ben’s <span>BURGERS</span><small>v28</small></div>
+ <div class="brand">Ben’s <span>BURGERS</span><small>v29</small></div>
  <div class="stat"><span>SHIFT</span><b id="shift">1 · 0/5</b></div>
  <div class="stat score-stat"><span>SCORE</span><b id="score">0</b></div>
  <div class="stat"><span>CASH</span><b id="money">$0.00</b></div>
  <div class="store"><b id="storeName">CORNER STAND</b><span id="combo">GRILL · STACK · SERVE</span></div>
  <button type="button" id="shopBtn" data-action="shop">SHOP</button>
+ <button type="button" id="soundBtn" aria-label="Mute sound effects" aria-pressed="true" title="Mute sound (volume in Pause)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sound-waves" d="M16 8q4 4 0 8m3-11q7 7 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg></button>
  <button type="button" id="pauseBtn" data-action="pause" aria-label="Pause game">Ⅱ</button>
  <button type="button" data-action="help" aria-label="How to play">?</button>
 </header>
@@ -47,7 +50,7 @@
 <footer class="footer"><div class="instructions"><b id="hint">Start with the bottom bun.</b><span id="status" role="status" aria-live="polite">Welcome!</span></div><button type="button" id="serveBtn" data-action="serve" aria-disabled="true">SERVE LOU →</button></footer>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
- <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v28</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
+ <section class="modal-card"><span class="eyebrow">BEN’S BURGERS · v29</span><h2 id="modalTitle">Welcome to Ben’s Burgers</h2><div id="modalText"></div><section class="sound-settings" aria-label="Sound effects settings"><button type="button" id="soundToggle" aria-pressed="true">SOUND ON</button><label for="soundVolume">Volume <output id="soundVolumeValue" for="soundVolume">45%</output></label><input id="soundVolume" type="range" min="0" max="100" step="5" value="45" aria-label="Sound effects volume"><small id="soundNote">Gentle effects only. No background music.</small></section><div class="modal-actions"><button type="button" id="modalPrimary">OPEN THE GRILL</button><button type="button" id="expandBtn" hidden>EXPAND THE DINER</button></div></section>
 </div>
 <div id="shopModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shopTitle" hidden>
  <section class="modal-card shop-card">

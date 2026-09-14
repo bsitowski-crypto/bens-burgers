@@ -1,0 +1,15 @@
+/* Audio controls stay compact; volume lives in the existing pause/help dialog. */
+#soundBtn{display:grid;place-items:center;flex:0 0 34px;min-width:30px;padding:3px 6px}
+#soundBtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#soundBtn .sound-cross{display:none}
+#soundBtn[data-muted=true]{color:#aab7b9}
+#soundBtn[data-muted=true] .sound-cross{display:block}
+#soundBtn[data-muted=true] .sound-waves{display:none}
+.sound-settings{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;align-items:center;padding:10px 12px;margin-top:10px;background:#d8cfba88;border:1px solid #bdad8d;border-radius:9px}
+.sound-settings>button{grid-row:1/3;min-height:40px;padding:7px 11px;border:1px solid #708268;border-radius:7px;background:#426356;color:#fff8e9;font-size:11px;font-weight:900}
+.sound-settings>button[aria-pressed=false]{background:#59615d}
+.sound-settings label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#514832}
+.sound-settings input{width:100%;height:28px;min-width:0;margin:0;accent-color:#526f4b;cursor:pointer;touch-action:pan-y}
+.sound-settings small{grid-column:1/-1;color:#665f4f;font-size:10px;line-height:1.25}
+@media(max-width:450px) and (orientation:portrait){.hud{gap:4px;padding:3px 6px}.brand{min-width:65px;font-size:20px}.brand>small{display:none!important}.hud .stat{padding:2px 4px}.hud .stat>b{font-size:12px}.hud .stat>span{font-size:7px}.hud>button{min-width:27px}#soundBtn{flex-basis:29px;min-width:27px;padding:2px}#soundBtn svg{width:18px;height:18px}#shopBtn{min-width:39px;padding:2px 5px;font-size:9px}}
+@media(max-height:380px) and (orientation:landscape){.sound-settings{padding:6px 9px;margin-top:6px;gap:3px 9px}.sound-settings>button{min-height:32px}.sound-settings small{font-size:9px}.sound-settings input{height:24px}#soundBtn{flex-basis:30px}}

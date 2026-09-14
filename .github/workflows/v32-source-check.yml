@@ -1,0 +1,34 @@
+name: Starter stand source check
+on:
+  push:
+    branches: [starter-stand-v32, main]
+    paths: ['v32*', 'index.html', 'stand-art-v32.*', '.github/workflows/v32-source-check.yml']
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  source-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify artwork checksum
+        run: echo 'ccf4f74782f1f155632fdb3c66ffee016af7752f047838aceebbaf7aaad01dda  stand-art-v32.webp' | sha256sum -c -
+      - name: Check JavaScript and run regressions
+        run: |
+          node --check v32-art.js
+          node --check v32-customers.js
+          node --check v32-model.js
+          node --check v32-ui.js
+          node v31-model.test.cjs
+          node sound-v29.test.cjs
+          node v32-model.test.cjs
+      - name: Package exact proposed source
+        if: always()
+        run: tar -czf /tmp/starter-stand-source.tar.gz --exclude=.git .
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: starter-stand-source
+          path: /tmp/starter-stand-source.tar.gz
+          retention-days: 2

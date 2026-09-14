@@ -4,15 +4,35 @@ on:
     branches: [starter-stand-v32]
     paths: [v32-package-trigger.txt]
 permissions:
-  contents: read
+  contents: write
 jobs:
   source-package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: starter-stand-v32
+      - name: Materialize checksum-verified native artwork
+        run: python3 tools/materialize-v32.py
+      - name: Commit native image on the proposed branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add stand-art-v32.webp
+          if ! git diff --cached --quiet; then
+            git commit -m 'Store verified illustrated starter-stand sprite atlas'
+            git push origin HEAD:starter-stand-v32
+          fi
+      - name: Run available release regressions
+        run: |
+          node v31-model.test.cjs
+          node sound-v29.test.cjs
+          if test -f v32-model.test.cjs; then node v32-model.test.cjs; fi
       - name: Package exact proposed source
+        if: always()
         run: tar -czf /tmp/starter-stand-source.tar.gz --exclude=.git .
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: starter-stand-source
           path: /tmp/starter-stand-source.tar.gz
